@@ -1,0 +1,44 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	model(model)
+	tools(tools)
+	SkillsMiddleware\2ebefore_agent(SkillsMiddleware.before_agent)
+	PatchToolCallsMiddleware\2ebefore_agent(PatchToolCallsMiddleware.before_agent)
+	TodoListMiddleware\2eafter_model(TodoListMiddleware.after_model)
+	PIIMiddleware\5bcredit_card\5d\2ebefore_model(PIIMiddleware[credit_card].before_model)
+	PIIMiddleware\5bcredit_card\5d\2eafter_model(PIIMiddleware[credit_card].after_model)
+	PIIMiddleware\5bapi_key\5d\2ebefore_model(PIIMiddleware[api_key].before_model)
+	PIIMiddleware\5bapi_key\5d\2eafter_model(PIIMiddleware[api_key].after_model)
+	NemotronToolCallRepairMiddleware\2eafter_agent(NemotronToolCallRepairMiddleware.after_agent)
+	NemotronEmptyCompletionMiddleware\2eafter_agent(NemotronEmptyCompletionMiddleware.after_agent)
+	MemoryMiddleware\2ebefore_agent(MemoryMiddleware.before_agent)
+	HumanInTheLoopMiddleware\2eafter_model(HumanInTheLoopMiddleware.after_model)
+	__end__([<p>__end__</p>]):::last
+	HumanInTheLoopMiddleware\2eafter_model --> PIIMiddleware\5bapi_key\5d\2eafter_model;
+	MemoryMiddleware\2ebefore_agent --> PIIMiddleware\5bcredit_card\5d\2ebefore_model;
+	NemotronEmptyCompletionMiddleware\2eafter_agent -.-> NemotronToolCallRepairMiddleware\2eafter_agent;
+	NemotronEmptyCompletionMiddleware\2eafter_agent -.-> PIIMiddleware\5bcredit_card\5d\2ebefore_model;
+	NemotronToolCallRepairMiddleware\2eafter_agent -.-> PIIMiddleware\5bcredit_card\5d\2ebefore_model;
+	NemotronToolCallRepairMiddleware\2eafter_agent -.-> __end__;
+	PIIMiddleware\5bapi_key\5d\2eafter_model --> PIIMiddleware\5bcredit_card\5d\2eafter_model;
+	PIIMiddleware\5bapi_key\5d\2ebefore_model -.-> NemotronEmptyCompletionMiddleware\2eafter_agent;
+	PIIMiddleware\5bapi_key\5d\2ebefore_model -.-> model;
+	PIIMiddleware\5bcredit_card\5d\2eafter_model --> TodoListMiddleware\2eafter_model;
+	PIIMiddleware\5bcredit_card\5d\2ebefore_model -.-> NemotronEmptyCompletionMiddleware\2eafter_agent;
+	PIIMiddleware\5bcredit_card\5d\2ebefore_model -.-> PIIMiddleware\5bapi_key\5d\2ebefore_model;
+	PatchToolCallsMiddleware\2ebefore_agent --> MemoryMiddleware\2ebefore_agent;
+	SkillsMiddleware\2ebefore_agent --> PatchToolCallsMiddleware\2ebefore_agent;
+	TodoListMiddleware\2eafter_model -.-> NemotronEmptyCompletionMiddleware\2eafter_agent;
+	TodoListMiddleware\2eafter_model -.-> PIIMiddleware\5bcredit_card\5d\2ebefore_model;
+	TodoListMiddleware\2eafter_model -.-> tools;
+	__start__ --> SkillsMiddleware\2ebefore_agent;
+	model --> HumanInTheLoopMiddleware\2eafter_model;
+	tools -.-> PIIMiddleware\5bcredit_card\5d\2ebefore_model;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

@@ -1,0 +1,39 @@
+graph TD;
+	__start__([__start__]):::first
+	model(model)
+	tools(tools)
+	SkillsMiddleware_dot_before_agent(SkillsMiddleware.before_agent)
+	PatchToolCallsMiddleware_dot_before_agent(PatchToolCallsMiddleware.before_agent)
+	TodoListMiddleware_dot_after_model(TodoListMiddleware.after_model)
+	PIIMiddleware_lb_credit_card_rb__dot_before_model("PIIMiddleware[credit_card].before_model")
+	PIIMiddleware_lb_credit_card_rb__dot_after_model("PIIMiddleware[credit_card].after_model")
+	PIIMiddleware_lb_api_key_rb__dot_before_model("PIIMiddleware[api_key].before_model")
+	PIIMiddleware_lb_api_key_rb__dot_after_model("PIIMiddleware[api_key].after_model")
+	NemotronToolCallRepairMiddleware_dot_after_agent(NemotronToolCallRepairMiddleware.after_agent)
+	NemotronEmptyCompletionMiddleware_dot_after_agent(NemotronEmptyCompletionMiddleware.after_agent)
+	MemoryMiddleware_dot_before_agent(MemoryMiddleware.before_agent)
+	HumanInTheLoopMiddleware_dot_after_model(HumanInTheLoopMiddleware.after_model)
+	__end__([__end__]):::last
+	HumanInTheLoopMiddleware_dot_after_model --> PIIMiddleware_lb_api_key_rb__dot_after_model;
+	MemoryMiddleware_dot_before_agent --> PIIMiddleware_lb_credit_card_rb__dot_before_model;
+	NemotronEmptyCompletionMiddleware_dot_after_agent -.-> NemotronToolCallRepairMiddleware_dot_after_agent;
+	NemotronEmptyCompletionMiddleware_dot_after_agent -.-> PIIMiddleware_lb_credit_card_rb__dot_before_model;
+	NemotronToolCallRepairMiddleware_dot_after_agent -.-> PIIMiddleware_lb_credit_card_rb__dot_before_model;
+	NemotronToolCallRepairMiddleware_dot_after_agent -.-> __end__;
+	PIIMiddleware_lb_api_key_rb__dot_after_model --> PIIMiddleware_lb_credit_card_rb__dot_after_model;
+	PIIMiddleware_lb_api_key_rb__dot_before_model -.-> NemotronEmptyCompletionMiddleware_dot_after_agent;
+	PIIMiddleware_lb_api_key_rb__dot_before_model -.-> model;
+	PIIMiddleware_lb_credit_card_rb__dot_after_model --> TodoListMiddleware_dot_after_model;
+	PIIMiddleware_lb_credit_card_rb__dot_before_model -.-> NemotronEmptyCompletionMiddleware_dot_after_agent;
+	PIIMiddleware_lb_credit_card_rb__dot_before_model -.-> PIIMiddleware_lb_api_key_rb__dot_before_model;
+	PatchToolCallsMiddleware_dot_before_agent --> MemoryMiddleware_dot_before_agent;
+	SkillsMiddleware_dot_before_agent --> PatchToolCallsMiddleware_dot_before_agent;
+	TodoListMiddleware_dot_after_model -.-> NemotronEmptyCompletionMiddleware_dot_after_agent;
+	TodoListMiddleware_dot_after_model -.-> PIIMiddleware_lb_credit_card_rb__dot_before_model;
+	TodoListMiddleware_dot_after_model -.-> tools;
+	__start__ --> SkillsMiddleware_dot_before_agent;
+	model --> HumanInTheLoopMiddleware_dot_after_model;
+	tools -.-> PIIMiddleware_lb_credit_card_rb__dot_before_model;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
