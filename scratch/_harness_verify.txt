@@ -1,0 +1,7 @@
+﻿=== import + registration test ===
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import jessica_harness as jh; print('ACTIVE =', jh._HARNESS_ACTIVE); print('SPECS  =', jh._REGISTERED_SPECS); print('CAPS   =', jh._caps()); from deepagents.profiles.harness.harness_profiles import _get_harness_profile; print('--- resolved profiles ---');
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'jessica_harness'
+exit=1

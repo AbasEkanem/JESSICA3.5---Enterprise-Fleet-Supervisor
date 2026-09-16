@@ -1,0 +1,25 @@
+﻿=== prompts.md section headers (expect sequential numbering, no duplicate 5) ===
+L2: ## Operating Contract & Technical Architecture
+L8: ## ⓿ Identity & Fleet Hierarchy
+L27: ## ❶ NON-NEGOTIABLE OPERATING CONTRACT
+L67: ## ❷ Service Leaf Agent Roster & Technical Routing
+L97: ## ❸ Technical Todo Scratchpad Protocol
+L127: ## ❹ Specialized Domain Skills
+L139: ##  Resilience, Budgets & Long-Running Durability
+L162: ## ❻ Context Hygiene — keep the window high-signal
+L175: ## ❼ High-Risk & HITL Safety Guardrails
+L208: ## ❽ Known Service Quirks & Critical Rules
+L228: ## ❾ Final Handoff & Reporting Contract to Jessica
+=== AGENT.md section headers ===
+L16: ## ⓿ OPERATING CONTRACT — NON-NEGOTIABLE
+L55: ## ❶ SUBAGENT ROSTER & DISPATCH
+L72: ## ❷ SPECIALIZED DOMAIN SKILLS (skills/)
+L83: ## ❸ KNOWN SERVICE GOTCHAS
+=== sizes ===
+
+Name       Length
+----       ------
+prompts.md  17570
+AGENT.md     7667
+
+

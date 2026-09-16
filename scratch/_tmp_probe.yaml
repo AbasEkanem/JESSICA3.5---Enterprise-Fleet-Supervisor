@@ -1,0 +1,14 @@
+# TEMPORARY probe config for verifying the `runtime: deep_agent` branch in
+# subagent_loader.py. Not part of the live registry — safe to delete.
+name: tmp_deep_probe
+description: Probe of the runtime=deep_agent path.
+runtime: deep_agent
+module: agents.google_workspace.services.sheets:create_sheets_graph
+
+---
+
+name: tmp_inline_probe
+description: Probe of the unchanged inline declarative path.
+tools:
+  - google_sheets_tools
+prompt_file: prompts/subagents/sheets_agent.md

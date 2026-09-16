@@ -1,0 +1,53 @@
+﻿=== harness mentions in project (excl venv) ===
+agents\google_workspace\services\drive.py:59: # creating the drive agent using the base harness - the create agent
+agents\google_workspace\agent.py:26: # falls back to None -> harness default on build failure).
+routes\chat.py:106: # ── Load harness config: time_periods and chat context template ───────────────
+routes\chat.py:110: def _load_harness_yaml() -> dict:
+routes\chat.py:111: path = _ROOT / "harness_config.yaml"
+routes\chat.py:116: raise RuntimeError(f"[chat] FATAL: harness_config.yaml not found at {path}")
+routes\chat.py:118: raise RuntimeError(f"[chat] FATAL: harness_config.yaml is malformed: {e}")
+routes\chat.py:139: _HARNESS_CFG = _load_harness_yaml()
+routes\chat.py:140: _TIME_PERIODS: dict = _HARNESS_CFG.get("time_periods", {})
+routes\chat.py:143: "[chat] FATAL: harness_config.yaml is missing 'time_periods' section. "
+routes\chat.py:163: """Resolve the current time-period label from harness_config.yaml."""
+routes\chat.py:759: # at 60 this fired BEFORE the harness's graceful 60-model-call budget
+routes\chat.py:762: # the harness's graceful partial answer. Correct layering is now:
+routes\chat.py:763: # harness budget (graceful) < _MAX_STEPS=150 (blunt) < recursion_limit=500.
+scratch\feature_test.py:2: scratch/feature_test.py — Comprehensive offline feature test harness for Jessica 3.5.
+scratch\feature_test.py:18: 10. Harness          — durability harness activation flag
+scratch\feature_test.py:67: "rate_limiter", "jessica_guard_middleware", "jessica_harness",
+scratch\feature_test.py:277: # ── 10. Durability harness ────────────────────────────────────────────────────────
+scratch\feature_test.py:278: def test_harness() -> None:
+scratch\feature_test.py:280: import jessica_harness
+scratch\feature_test.py:281: active = getattr(jessica_harness, "_HARNESS_ACTIVE", None)
+scratch\feature_test.py:282: record("durability harness", PASS if active else WARN,
+scratch\feature_test.py:285: record("durability harness", FAIL, _short(exc))
+scratch\feature_test.py:311: print("\n── 10. Durability harness ──────────────────────────────────────")
+scratch\feature_test.py:312: test_harness()
+Users\jessica\pm_agent_research_findings.md:6: - **`create_agent`** (LC 1.0 harness) — standard ReAct loop (model + tools + opt-in middleware). For "think → tool → repeat", RAG, simpler agents.
+Users\jessica\pm_agent_research_findings.md:57: [^2]: [LangChain vs LangGraph vs Deep Agents](https://dreaming.press/posts/langchain-vs-langgraph-vs-deepagents-harness.html)
+ARCHITECTURE_REVIEW_FIXES.md:25: - LH-03 harness-level subagent retry — deferred (harness change).
+config.py:14: # Load YAML configuration for structural harness boundaries
+config.py:15: _yaml_path = Path(__file__).parent / "harness_config.yaml"
+config.py:18: _harness_config = yaml.safe_load(f) or {}
+config.py:20: _harness_config = {}
+config.py:22: def get_harness_cfg(section, key, default):
+config.py:23: return _harness_config.get(section, {}).get(key, default)
+config.py:26: RESEARCH_TIMEOUT_S      = int(os.getenv("RESEARCH_TIMEOUT_S",     get_harness_cfg("timeouts", "research_s", 360)))
+config.py:27: CONVERSATION_TIMEOUT_S  = int(os.getenv("CONVERSATION_TIMEOUT_S", get_harness_cfg("timeouts", "conversation_s", 360)))
+config.py:28: AGENT_HARD_TIMEOUT_S    = int(os.getenv("AGENT_HARD_TIMEOUT_S",   get_harness_cfg("timeouts", "agent_hard_s", 480)))
+config.py:37: # recursion_limit is only an infinite-loop backstop. NOTE: harness_config.yaml
+config.py:40: CONVERSATION_RECURSION_LIMIT = int(os.getenv("CONVERSATION_RECURSION_LIMIT", get_harness_cfg("limits", "conversation_recursion", 500)))
+config.py:48: BACKGROUND_RECURSION_LIMIT = int(os.getenv("BACKGROUND_RECURSION_LIMIT", get_harness_cfg("limits", "background_recursion", CONVERSATION_RECURSION_LIMIT)))
+=== does loadenv define __all__ ? ===
+=== harness-ish API in venv ===
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\harness_profiles.py:15: Users may register profiles via `register_harness_profile`. Deep Agents
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\_anthropic_haiku_4_5.py:27: from deepagents.profiles.harness.harness_profiles import (
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\_anthropic_opus_4_7.py:21: from deepagents.profiles.harness.harness_profiles import (
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\_anthropic_sonnet_4_6.py:27: from deepagents.profiles.harness.harness_profiles import (
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\_nvidia_nemotron_3_ultra.py:29: from deepagents.profiles.harness.harness_profiles import (
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\_openai_codex.py:22: from deepagents.profiles.harness.harness_profiles import (
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\harness\__init__.py:10: from deepagents.profiles.harness.harness_profiles import (
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\_builtin_profiles.py:12: - `deepagents.harness_profiles` — plugins that call
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\_keys.py:3: Both `harness_profiles` and `provider_profiles` use the same `provider` or
+jessica3.0_venv\Lib\site-packages\deepagents\profiles\__init__.py:23: `register_harness_profile`) are additive: re-registering under an existing key

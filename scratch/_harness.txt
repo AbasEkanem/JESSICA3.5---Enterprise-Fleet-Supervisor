@@ -1,0 +1,46 @@
+﻿=== harness files at root ===
+
+Name                Length LastWriteTime       
+----                ------ -------------       
+harness_config.yaml   3188 8/20/2026 7:19:38 PM
+
+
+=== loadenv: harness + subagent model builder ===
+L368: def _safe_build_subagent_model(
+L395: jira_agent_model              = _safe_build_subagent_model("JIRA_AGENT_MODEL_ID", "JIRA_AGENT_API_KEY")
+L396: confluence_agent_model        = _safe_build_subagent_model("CONFLUENCE_AGENT_MODEL_ID", "CONFLUENCE_AGENT_API_KEY")
+L397: email_agent_model             = _safe_build_subagent_model("EMAIL_AGENT_MODEL_ID", "EMAIL_AGENT_API_KEY")
+L398: slack_agent_model             = _safe_build_subagent_model("SLACK_AGENT_MODEL_ID", "SLACK_AGENT_API_KEY")
+L399: web_searcher_model            = _safe_build_subagent_model("WEB_SEARCHER_MODEL_ID", "WEB_SEARCHER_API_KEY")
+L400: drive_agent_model            = _safe_build_subagent_model("DRIVE_AGENT_MODEL_ID", "DRIVE_AGENT_API_KEY")
+L401: docs_agent_model             = _safe_build_subagent_model("DOCS_AGENT_MODEL_ID", "DOCS_AGENT_API_KEY")
+L402: slides_agent_model           = _safe_build_subagent_model("SLIDES_AGENT_MODEL_ID", "SLIDES_AGENT_API_KEY")
+L403: sheets_agent_model           = _safe_build_subagent_model("SHEETS_AGENT_MODEL_ID", "SHEETS_AGENT_API_KEY")
+L404: forms_agent_model            = _safe_build_subagent_model("FORMS_AGENT_MODEL_ID", "FORMS_AGENT_API_KEY")
+L405: calendar_agent_model         = _safe_build_subagent_model("CALENDAR_AGENT_MODEL_ID", "CALENDAR_AGENT_API_KEY")
+L406: google_classroom_agent_model  = _safe_build_subagent_model("GOOGLE_CLASSROOM_AGENT_MODEL_ID", "GOOGLE_CLASSROOM_AGENT_API_KEY")
+L407: juliet_agent_model            = _safe_build_subagent_model("JULIET_AGENT_MODEL_ID", "JULIET_AGENT_API_KEY")
+=== who references AGENT.md / prompts.md (excl venv) ===
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py:41: _prompt_file = Path(__file__).parent / "prompts.md"
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:58: │   │   └── prompts.md       # Domain system prompt
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:63: │   │   └── prompts.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:68: │   │   └── prompts.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:73: │       └── prompts.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:95: **`prompts.md`** — domain instructions + delegation boundaries; replaces the 8 Google thin personas (drive/docs/sheets/slides/forms/calendar/google_classroom/juliet).
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:105: **`prompts.md`** — replaces Jordan + Tyler personas.
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:114: **`prompts.md`** — replaces Morgan + Connie personas.
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:121: **`prompts.md`** — replaces the Sophie persona; carries the skill pipeline order (`research-engine → analysis-synthesis → report-and-email-delivery`) as operating instructions since skills live at JESSICA level.
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:213: 2. `agents/google_workspace/prompts.md`.
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\implementation_plan.md:282: 3. Persona names (Morgan/Connie/Jordan/Tyler/Sophie/Alex/…) — fold into member `prompts.md` as flavor or drop.
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:12: prompt_file: prompts/subagents/jira_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:26: prompt_file: prompts/subagents/confluence_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:48: prompt_file: prompts/subagents/email_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:71: prompt_file: prompts/subagents/slack_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:107: prompt_file: prompts/subagents/drive_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:122: prompt_file: prompts/subagents/docs_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:137: prompt_file: prompts/subagents/slides_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:152: prompt_file: prompts/subagents/sheets_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:170: prompt_file: prompts/subagents/forms_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:185: prompt_file: prompts/subagents/calendar_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:199: prompt_file: prompts/subagents/google_classroom_agent.md
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent.yaml:214: prompt_file: prompts/subagents/juliet_agent.md

@@ -1,0 +1,16 @@
+﻿=== INTEGRATION TEST: real registry through load_subagents ===
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\jessica3.0_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\_common.py:212: UserWarning: An API key is required for the hosted NIM. This will become an error in the future.
+COUNT: 14
+NAMES: ['jira_agent', 'confluence_agent', 'email_agent', 'slack_agent', 'web_searcher', 'drive_agent', 'docs_agent', 'slides_agent', 'sheets_agent', 'forms_agent', 'calendar_agent', 'google_classroom_agent', 'juliet_agent', 'google_workspace_agent']
+HAS_RUNNABLE: [('google_workspace_agent', True)]
+=== did router.py / AGENTS.md get updated? ===
+router.py matches = 0
+AGENTS.md matches = 0
+=== .env model keys for gemma ===
+=== invalid-escape-sequence source ===
+feature_test.py:21: .\jessica3.0_venv\Scripts\python.exe scratch\feature_test.py
+live_tool_test.py:19: .\jessica3.0_venv\Scripts\python.exe scratch\live_tool_test.py
+extract.py:101: out_path = r'c:\Users\Bussiness Sensor\Desktop\jessica3.0.0\ui\src\components\IntegrationMarquee.tsx'
+extract_icons.py:9: out_dir = r"c:\Users\Bussiness Sensor\Desktop\jessica3.0.0\ui\public\integrations"
+process_google_icons.py:47: input_dir = r"c:\Users\Bussiness Sensor\Desktop\jessica3.0.0\ui\public\integrations"
+process_icons.py:33: input_dir = r"c:\Users\Bussiness Sensor\Desktop\jessica3.0.0\ui\public\integrations"

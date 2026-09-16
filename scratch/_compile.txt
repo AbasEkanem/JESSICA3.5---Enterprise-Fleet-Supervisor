@@ -1,0 +1,14 @@
+﻿exit=0
+=== node/edge sanity: docs + coursework ===
+docs.py:79: graph_builder.add_node("docs_agent", docs_agent)
+docs.py:80: graph_builder.add_node("tools", ToolNode(tools))
+docs.py:81: graph_builder.set_entry_point("docs_agent")
+docs.py:82: graph_builder.add_conditional_edges(
+docs.py:94: graph_builder.add_edge("tools", "docs_agent")
+docs.py:95: self.graph_builder = graph_builder.compile(checkpointer=_memory, interrupt_before=["tools"])
+coursework.py:89: course_graph.add_node("course_agent", course_agent)
+coursework.py:90: course_graph.add_node("tools", ToolNode(tools))
+coursework.py:92: course_graph.set_entry_point("course_agent")
+coursework.py:93: course_graph.add_conditional_edges(
+coursework.py:102: course_graph.add_edge("tools", "course_agent")
+coursework.py:104: self.course_graph = course_graph.compile(checkpointer=memory, interrupt_before=["tools"])

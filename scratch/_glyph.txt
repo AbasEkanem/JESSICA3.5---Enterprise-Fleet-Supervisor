@@ -1,0 +1,17 @@
+﻿target: C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\prompts.md
+before-has-BOM: False
+after-has-BOM: False
+LINE: ## ❺ Resilience, Budgets & Long-Running Durability
+CODEPOINTS: 35,35,32,10106,32,82
+=== all section headers after fix ===
+L2
+L8
+L27
+L67
+L97
+L127
+L139
+L162
+L175
+L208
+L228

@@ -1,0 +1,25 @@
+﻿=== HarnessProfile fields + register fn signature ===
+L158: def from_dict(cls, data: Mapping[str, Any]) -> GeneralPurposeSubagentProfile:
+L192: class HarnessProfileConfig:
+L374: def from_dict(cls, data: Mapping[str, Any]) -> HarnessProfileConfig:
+L483: class HarnessProfile:
+L496: `provider:model` key (`"openai:gpt-5.4"`).
+L940: Keys are either a full `provider:model` spec for per-model overrides or a
+L977: def register_harness_profile(key: str, profile: HarnessProfile | HarnessProfileConfig) -> None:
+L1013: or a full `provider:model` spec for a per-model override. Valid
+L1072: spec: Model spec in `provider:model` format, or a bare provider/model
+L1258: and combined into a `provider:identifier` key so that model-level profiles
+L1259: registered under the canonical `provider:model` shape still resolve when
+L1262: `provider:model` shape) and a provider-only fallback.
+L1287: # Try the canonical `provider:model` key first so user registrations under
+L1298: # `provider:model` shape — otherwise a bare identifier could accidentally
+=== harness dir contents ===
+harness_profiles.py
+_anthropic_haiku_4_5.py
+_anthropic_opus_4_7.py
+_anthropic_sonnet_4_6.py
+_nvidia_nemotron_3_ultra.py
+_openai_codex.py
+__init__.py
+=== .env brain model id (id only) ===
+JESSICA_BRAIN_MODEL_ID=nvidia/nemotron-3-super-120b-a12b

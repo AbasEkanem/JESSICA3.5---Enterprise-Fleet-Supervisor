@@ -1,0 +1,44 @@
+﻿=== .env: which agent model keys exist? (names only) ===
+JESSICA_BRAIN_MODEL_ID
+RESEARCH_MODEL_ID
+# SUBAGENT_MODEL_ID
+JIRA_AGENT_MODEL_ID
+CONFLUENCE_AGENT_MODEL_ID
+EMAIL_AGENT_MODEL_ID
+SLACK_AGENT_MODEL_ID
+WEB_SEARCHER_MODEL_ID
+DRIVE_AGENT_MODEL_ID
+DOCS_AGENT_MODEL_ID
+SLIDES_AGENT_MODEL_ID
+SHEETS_AGENT_MODEL_ID
+FORMS_AGENT_MODEL_ID
+# FORMS_AGENT_MODEL_ID
+CALENDAR_AGENT_MODEL_ID
+GOOGLE_CLASSROOM_AGENT_MODEL_ID
+JULIET_AGENT_MODEL_ID
+ROUTING_MODEL_ID
+=== langgraph.json graphs ===
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./agent.py:graph",
+    "jessica": "./JESSICA3.5.py:make_graph"
+  },
+  "env": ".env",
+  "recursion_limit": 1000
+}
+
+
+=== does anything already call google_workspace subagents loader? ===
+agents\google_workspace\agent.py:21: from agents.google_workspace.subagent_loader import load_google_workspace_subagents
+agents\google_workspace\agent.py:25: # (GOOGLE_WORKSPACE_AGENT_MODEL_ID / GOOGLE_WORKSPACE_AGENT_API_KEY env vars;
+agents\google_workspace\agent.py:28: from loadenv import google_workspace_agent_model
+agents\google_workspace\agent.py:30: google_workspace_agent_model = None
+agents\google_workspace\agent.py:32: AGENT_NAME = "google_workspace_agent"
+agents\google_workspace\agent.py:61: "load_google_workspace_subagents",
+agents\google_workspace\agent.py:62: "google_workspace_agent_model",
+agents\google_workspace\subagent_loader.py:48: def load_google_workspace_subagents(
+agents\google_workspace\subagent_loader.py:106: __all__ = ["load_google_workspace_subagents"]
+loadenv.py:409: # google_workspace_agent_model` (its header documents that name as being built from
+loadenv.py:410: # GOOGLE_WORKSPACE_AGENT_MODEL_ID / GOOGLE_WORKSPACE_AGENT_API_KEY), but this name
+loadenv.py:415: google_workspace_agent_model  = _safe_build_subagent_model("GOOGLE_WORKSPACE_AGENT_MODEL_ID", "GOOGLE_WORKSPACE_AGENT_API_KEY")

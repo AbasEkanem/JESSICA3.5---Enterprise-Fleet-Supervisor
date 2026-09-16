@@ -1,0 +1,16 @@
+﻿=== does jessica_harness exist anywhere? ===
+
+FullName                                                             Length
+--------                                                             ------
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\harness_config.yaml     3188
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_harness.txt    4917
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_harness2.txt     51
+
+
+=== google_workspace_agent_model definition in loadenv ===
+=== is jessica_harness imported anywhere else ===
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\feature_test.py:67: "rate_limiter", "jessica_guard_middleware", "jessica_harness",
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\feature_test.py:280: import jessica_harness
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\feature_test.py:281: active = getattr(jessica_harness, "_HARNESS_ACTIVE", None)
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\config.py:74: # jessica_harness.py registers ONE re-tuned profile under BOTH Nemotron-3 specs so
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\JESSICA3.5.py:8: import jessica_harness  # noqa: F401  (import-for-side-effect: harness registration)

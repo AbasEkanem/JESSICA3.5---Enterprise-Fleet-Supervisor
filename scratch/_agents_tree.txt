@@ -1,0 +1,59 @@
+﻿
+LastWriteTime         Length FullName                                                                                                              
+-------------         ------ --------                                                                                                              
+9/15/2026 12:51:43 AM   6800 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\AGENT.md                                       
+9/15/2026 12:51:13 AM  15579 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\prompts.md                                     
+9/15/2026 12:50:29 AM   4426 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\subagent_loader.cpython-314.pyc    
+9/15/2026 12:50:26 AM   2193 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\agent.cpython-314.pyc              
+9/15/2026 12:49:30 AM   2379 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py                                       
+9/15/2026 12:49:00 AM   3489 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\skills\classroom-and-calendar-ops\SKILL.md     
+9/15/2026 12:48:50 AM   3300 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\skills\docs-and-forms-automation\SKILL.md      
+9/15/2026 12:48:41 AM   3030 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\skills\sheets-and-slides-reporting\SKILL.md    
+9/15/2026 12:48:31 AM   3210 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\skills\drive-lifecycle-and-sharing\SKILL.md    
+9/15/2026 12:48:21 AM   2892 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\skills\cross-service-orchestration\SKILL.md    
+9/15/2026 12:46:27 AM   3368 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\subagent_loader.py                             
+9/15/2026 12:30:50 AM   5726 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\subagents.yaml                                 
+9/15/2026 12:20:36 AM    143 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\__init__.cpython-314.pyc  
+9/15/2026 12:20:36 AM    327 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\__init__.cpython-314.pyc           
+9/15/2026 12:20:36 AM    117 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\__pycache__\__init__.cpython-314.pyc                            
+9/15/2026 12:20:22 AM    327 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__init__.py                           
+9/15/2026 12:20:19 AM    624 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__init__.py                                    
+9/15/2026 12:20:16 AM     81 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\__init__.py                                                     
+9/15/2026 12:13:46 AM   2360 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\sheets.py                             
+9/15/2026 12:07:10 AM   2790 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\slides.cpython-314.pyc    
+9/15/2026 12:07:10 AM   2667 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\sheets.cpython-314.pyc    
+9/15/2026 12:06:55 AM   2481 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\slides.py                             
+9/15/2026 12:05:19 AM   2885 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\forms.cpython-314.pyc     
+9/15/2026 12:05:19 AM   2872 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\drive.cpython-314.pyc     
+9/15/2026 12:05:18 AM   5041 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\docs.cpython-314.pyc      
+9/15/2026 12:04:17 AM   2573 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\forms.py                              
+9/15/2026 12:04:16 AM   2630 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\drive.py                              
+9/15/2026 12:04:13 AM   3632 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\docs.py                               
+9/14/2026 9:42:46 PM    5108 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\coursework.cpython-314.pyc
+9/14/2026 9:41:01 PM    4236 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\coursework.py                         
+9/13/2026 7:13:52 PM    3919 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\classroom.cpython-314.pyc 
+9/13/2026 7:13:01 PM    3875 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\classroom.py                          
+9/13/2026 3:11:25 PM    6140 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__pycache__\calendar.cpython-314.pyc  
+9/13/2026 3:11:02 PM    5559 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\calendar.py                           
+9/13/2026 11:33:58 AM   6980 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\tools.cpython-314.pyc              
+9/13/2026 11:33:58 AM  31662 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\classroom.cpython-314.pyc          
+9/13/2026 11:33:58 AM  18488 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\calendar.cpython-314.pyc           
+9/13/2026 11:33:58 AM  15317 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\forms.cpython-314.pyc              
+9/13/2026 11:33:58 AM  35705 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\slides.cpython-314.pyc             
+9/13/2026 11:33:58 AM  15173 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\sheets.cpython-314.pyc             
+9/13/2026 11:33:58 AM  13510 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\docs.cpython-314.pyc               
+9/13/2026 11:33:58 AM  25841 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\drive.cpython-314.pyc              
+9/13/2026 11:33:58 AM  11013 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\token_store.cpython-314.pyc        
+9/13/2026 11:33:58 AM  23843 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__pycache__\auth.cpython-314.pyc               
+9/13/2026 11:31:34 AM   9155 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\tools.py                                       
+9/13/2026 7:23:50 AM   22968 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\auth.py                                        
+9/13/2026 7:23:48 AM   31132 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\slides.py                                      
+9/13/2026 7:23:45 AM    9973 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\sheets.py                                      
+9/13/2026 7:23:44 AM   10085 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\forms.py                                       
+9/13/2026 7:23:42 AM   19255 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\drive.py                                       
+9/13/2026 7:23:41 AM   10066 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\docs.py                                        
+9/13/2026 7:23:40 AM   20888 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\classroom.py                                   
+9/13/2026 7:23:38 AM   13251 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\calendar.py                                    
+8/4/2026 12:46:32 PM    8205 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\token_store.py                                 
+
+

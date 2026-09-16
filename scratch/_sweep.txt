@@ -1,0 +1,20 @@
+﻿=== py_compile sweep of every file I touched ===
+compile-exit=0
+=== file states ===
+
+Name               Length LastWriteTime       
+----               ------ -------------       
+subagent_loader.py  27394 9/15/2026 5:07:08 PM
+loadenv.py          23783 9/15/2026 8:04:51 AM
+JESSICA3.5.py        3387 9/15/2026 8:31:37 AM
+docs.py              4020 9/15/2026 8:04:51 AM
+coursework.py        4459 9/15/2026 8:32:11 AM
+prompts.md          17573 9/15/2026 8:40:02 AM
+AGENT.md             8071 9/15/2026 8:39:25 AM
+GEMMA_WIRING.md      5251 9/15/2026 5:21:42 PM
+
+
+=== still absent / still 13 ===
+gemma.py exists = False
+registry google_workspace matches = 0
+registry docs = 13

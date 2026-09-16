@@ -1,0 +1,22 @@
+﻿=== candidate gemma module names ===
+agents\google_workspace\gemma.py = False
+agents\google_workspace\gemma_agent.py = False
+agents\google_workspace\supervisor.py = False
+agents\google_workspace\graph.py = False
+gemma.py = False
+=== files modified in the last 3 hours (excl venv/cache) ===
+
+LastWriteTime        Length FullName                                                                
+-------------        ------ --------                                                                
+9/15/2026 5:08:58 PM    300 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_resume.txt      
+9/15/2026 5:07:57 PM    678 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_loader_test2.txt
+9/15/2026 5:07:08 PM  27394 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\subagent_loader.py       
+9/15/2026 5:05:56 PM   4858 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_loader_test.txt 
+9/15/2026 5:04:43 PM    487 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_tmp_probe.yaml  
+9/15/2026 4:58:10 PM   1213 C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\scratch\_gemma.txt       
+
+
+=== has a google_workspace entry been added to the registry? ===
+0
+=== any runtime: deep_agent entries in the registry? ===
+0

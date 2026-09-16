@@ -1,0 +1,37 @@
+﻿=== all refs to google_workspace_agent_model (excl venv) ===
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py:25: # (GOOGLE_WORKSPACE_AGENT_MODEL_ID / GOOGLE_WORKSPACE_AGENT_API_KEY env vars;
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py:28: from loadenv import google_workspace_agent_model
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py:30: google_workspace_agent_model = None
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py:62: "google_workspace_agent_model",
+=== .env names for GOOGLE_WORKSPACE_* (names only, no values) ===
+=== root subagent.yaml: google/gemma registration? ===
+L1: name: jira_agent
+L16: name: confluence_agent
+L30: name: email_agent
+L52: name: slack_agent
+L75: name: web_searcher
+L96: name: drive_agent
+L98: You are Alex, Jessica's Google Drive file management specialist. Handle all file and folder
+L99: operations in Google Drive: searching, uploading, downloading, exporting, creating folders,
+L103: - google_drive_tools
+L111: name: docs_agent
+L113: You are Taylor, Jessica's Google Docs specialist. Handle all Google Docs operations:
+L118: - google_docs_tools
+L126: name: slides_agent
+L128: You are Riley, Jessica's Google Slides presentation specialist. Handle all presentation deck operations:
+L133: - google_slides_tools
+L141: name: sheets_agent
+L143: You are Chris, Jessica's Google Sheets spreadsheet specialist. Handle all Google Sheets operations:
+L148: - google_sheets_tools
+L156: name: forms_agent
+L158: You are Francis, Jessica's Google Forms survey specialist. Handle all Google Forms operations:
+L163: - google_forms_tools
+L174: name: calendar_agent
+L176: You are Casey, Jessica's Google Calendar scheduling specialist. Handle all calendar operations:
+L181: - google_calendar_tools
+L189: name: google_classroom_agent
+L191: You are Sam, Jessica's Google Classroom course & roster specialist. Handle course creation,
+L195: - google_classroom_courses_tools
+L199: prompt_file: prompts/subagents/google_classroom_agent.md
+L203: name: juliet_agent
+L205: You are Juliet, Jessica's Google Classroom coursework, grading, and announcements specialist.

@@ -1,0 +1,24 @@
+﻿=== final sizes ===
+
+Name          Length LastWriteTime       
+----          ------ -------------       
+prompts.md     17573 9/15/2026 8:40:02 AM
+AGENT.md        8071 9/15/2026 8:39:25 AM
+docs.py         4020 9/15/2026 8:04:51 AM
+coursework.py   4459 9/15/2026 8:32:11 AM
+loadenv.py     23783 9/15/2026 8:04:51 AM
+JESSICA3.5.py   3387 9/15/2026 8:31:37 AM
+
+
+=== prompts.md: only ONE 5-digit, ONE 6-digit, ONE 7-digit, ONE 8-digit, ONE 9-digit header? ===
+L2: first-cp=79 text=perating Contract & Technica
+L8: first-cp=9471 text= Identity & Fleet Hierarchy
+L27: first-cp=10102 text= NON-NEGOTIABLE OPERATING CO
+L67: first-cp=10103 text= Service Leaf Agent Roster &
+L97: first-cp=10104 text= Technical Todo Scratchpad P
+L127: first-cp=10105 text= Specialized Domain Skills
+L139: first-cp=10106 text= Resilience, Budgets & Long-
+L162: first-cp=10107 text= Context Hygiene — keep the 
+L175: first-cp=10108 text= High-Risk & HITL Safety Gua
+L208: first-cp=10109 text= Known Service Quirks & Crit
+L228: first-cp=10110 text= Final Handoff & Reporting C

@@ -1,0 +1,16 @@
+﻿1787250058895 
+51aa8019bfb33ff59a18f4ad031e7b32 {
+  "folder": "file:///c%3A/xampp/htdocs"
+}
+6c775909e20ddb4d5bb6cd109a30da56 {
+  "folder": "file:///c%3A/xampp/htdocs/wordpress"
+}
+79201bcd85275acfeef5edcf7b87e7b9 {
+  "folder": "file:///c%3A/Users/Bussiness%20Sensor/Desktop/test"
+}
+f323b49f33c2ded2f1fdf11a1ac99c79 {
+  "folder": "file:///c%3A/Windows/System32/drivers/etc"
+}
+fcd92760b8fca00b19cec50e3743b915 {
+  "folder": "file:///c%3A/Users/Bussiness%20Sensor/Desktop/jessica_project/workspace"
+}

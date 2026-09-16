@@ -1,0 +1,67 @@
+﻿=== where is interrupt_on honoured? (deepagents) ===
+graph.py:45: from deepagents.middleware._fs_interrupt import _build_interrupt_on_from_permissions
+graph.py:182: def _merge_fs_interrupt_on(
+graph.py:183: fs_interrupt_on: dict[str, InterruptOnConfig],
+graph.py:184: user_interrupt_on: dict[str, bool | InterruptOnConfig] | None,
+graph.py:188: User-defined `interrupt_on` entries take precedence over generated
+graph.py:193: if not fs_interrupt_on and not user_interrupt_on:
+graph.py:195: merged: dict[str, bool | InterruptOnConfig] = {**fs_interrupt_on}
+graph.py:196: if user_interrupt_on:
+graph.py:197: merged.update(user_interrupt_on)
+graph.py:279: interrupt_on: dict[str, bool | InterruptOnConfig] | None = None,
+graph.py:390: - [`HumanInTheLoopMiddleware`][langchain.agents.middleware.HumanInTheLoopMiddleware] (if `interrupt_on` is provided)
+graph.py:417: override `tools`, `model`, `middleware`, `interrupt_on`, `skills`,
+graph.py:418: `permissions`, and `response_format`. See `interrupt_on` below for
+graph.py:467: generated `interrupt_on` entries are merged with the
+graph.py:468: `interrupt_on` argument below (user-supplied entries win per
+graph.py:485: interrupt_on: Mapping of tool names to interrupt configs.
+graph.py:493: - Declarative `SubAgent` specs inherit the top-level `interrupt_on`
+graph.py:495: - If a declarative `SubAgent` provides its own `interrupt_on`, that
+graph.py:499: `interrupt_on`; configure human-in-the-loop behavior inside the
+graph.py:502: `interrupt_on`; configure any approval behavior on the remote
+graph.py:505: For example, `interrupt_on={"edit_file": True}` pauses before
+graph.py:720: subagent_interrupt_on = spec.get("interrupt_on", interrupt_on)
+graph.py:721: subagent_interrupt_on = _merge_fs_interrupt_on(
+graph.py:722: _build_interrupt_on_from_permissions(subagent_permissions or []),
+graph.py:723: subagent_interrupt_on,
+=== how does the task tool invoke a CompiledSubAgent runnable? ===
+L1: """Middleware for providing subagents to an agent via a `task` tool."""
+L22: from langchain_core.runnables import Runnable, RunnableConfig
+L33: """Configurable key used by task-tool callers to request dynamic response format."""
+L46: The main agent uses this name when calling the `task()` tool.
+L167: class CompiledSubAgent(TypedDict):
+L172: The `runnable`'s state schema must include a 'messages' key.
+L179: `CompiledSubAgent` runnables are used as provided. They do not
+L180: inherit `create_deep_agent(state_schema=...)`; if the runnable
+L202: researcher: CompiledSubAgent = {
+L205: "runnable": create_agent(
+L233: runnable: Runnable
+L272: class TaskToolSchema(BaseModel):
+L273: """Input schema for the `task` tool."""
+L277: "A detailed description of the task for the subagent to perform autonomously. "
+L285: TASK_TOOL_DESCRIPTION = """Launch an ephemeral subagent to handle a complex, multi-step task in an isolated context window.
+L291: - Launch multiple agents concurrently when their tasks are independent, using a single message with multiple tool calls.
+L296: - When only general-purpose is available, use it for any complex, context-heavy task; it has the same capabilities as the main agent."""  # noqa: E501
+L299: DEFAULT_GENERAL_PURPOSE_DESCRIPTION = "General-purpose agent for researching complex questions, searching for files and content, and executing multi-step tasks. When you are searching for a keyword or file and are not confident that you will find the right match in the first few tries use this agent to perform the search for you. This agent has access to all tools as the main agent."  # noqa: E501
+L338: ) -> Runnable:
+L339: """Create a runnable agent from a raw `SubAgent` spec.
+L342: raw subagent specs. Pre-compiled `CompiledSubAgent` runnables are already
+L353: Runnable agent ready for task-tool invocation.
+L391: """Return the response format carried in this task tool call's config."""
+L402: def _build_task_tool(  # noqa: C901, PLR0915
+L403: subagents: Sequence[SubAgent | CompiledSubAgent],
+L404: task_description: str | None = None,
+L409: """Create a task tool from subagent specs.
+L413: task_description: Custom description for the task tool. If `None`,
+L424: spec: SubAgent | CompiledSubAgent,
+L427: ) -> CompiledSubAgent:
+L428: """Compile one raw spec or configure one provided runnable."""
+L429: if "runnable" in spec:
+L434: # Use with_config (not attribute mutation) so the original runnable is
+L436: compiled = cast("CompiledSubAgent", spec)
+L437: runnable = compiled["runnable"].with_config(
+L446: "runnable": runnable,
+L451: "runnable": create_sub_agent(
+L462: subagent_graphs: dict[str, Runnable] = {spec["name"]: spec["runnable"] for spec in compiled_subagents}
+L467: if task_description is None:
+L468: description = TASK_TOOL_DESCRIPTION.format(available_agents=subagent_description_str)

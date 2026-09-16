@@ -1,0 +1,25 @@
+﻿=== candidate harness paths (Test-Path) ===
+jessica_harness.py => False
+jessica_harness => False
+jessica_harness\__init__.py => False
+jessica_guard_middleware.py => False
+agents\jessica_harness.py => False
+=== real import attempt with project venv ===
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import sys; sys.path.insert(0,'.'); import jessica_harness; print('IMPORT OK ->', jessica_harness.__file__)
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'jessica_harness'
+=== loadenv: GOOGLE_WORKSPACE / model-id table ===
+L395: jira_agent_model              = _safe_build_subagent_model("JIRA_AGENT_MODEL_ID", "JIRA_AGENT_API_KEY")
+L396: confluence_agent_model        = _safe_build_subagent_model("CONFLUENCE_AGENT_MODEL_ID", "CONFLUENCE_AGENT_API_KEY")
+L397: email_agent_model             = _safe_build_subagent_model("EMAIL_AGENT_MODEL_ID", "EMAIL_AGENT_API_KEY")
+L398: slack_agent_model             = _safe_build_subagent_model("SLACK_AGENT_MODEL_ID", "SLACK_AGENT_API_KEY")
+L400: drive_agent_model            = _safe_build_subagent_model("DRIVE_AGENT_MODEL_ID", "DRIVE_AGENT_API_KEY")
+L401: docs_agent_model             = _safe_build_subagent_model("DOCS_AGENT_MODEL_ID", "DOCS_AGENT_API_KEY")
+L402: slides_agent_model           = _safe_build_subagent_model("SLIDES_AGENT_MODEL_ID", "SLIDES_AGENT_API_KEY")
+L403: sheets_agent_model           = _safe_build_subagent_model("SHEETS_AGENT_MODEL_ID", "SHEETS_AGENT_API_KEY")
+L404: forms_agent_model            = _safe_build_subagent_model("FORMS_AGENT_MODEL_ID", "FORMS_AGENT_API_KEY")
+L405: calendar_agent_model         = _safe_build_subagent_model("CALENDAR_AGENT_MODEL_ID", "CALENDAR_AGENT_API_KEY")
+L406: google_classroom_agent_model  = _safe_build_subagent_model("GOOGLE_CLASSROOM_AGENT_MODEL_ID", "GOOGLE_CLASSROOM_AGENT_API_KEY")
+L407: juliet_agent_model            = _safe_build_subagent_model("JULIET_AGENT_MODEL_ID", "JULIET_AGENT_API_KEY")

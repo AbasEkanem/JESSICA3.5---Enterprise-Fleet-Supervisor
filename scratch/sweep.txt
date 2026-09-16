@@ -1,0 +1,53 @@
+agents\google_workspace\auth.py:31: from google_auth_httplib2 import AuthorizedHttp
+agents\google_workspace\auth.py:32: from google_auth_oauthlib.flow import InstalledAppFlow
+agents\google_workspace\calendar.py:2: google_calendar_tools.py
+agents\google_workspace\classroom.py:2: google_classroom_tools.py
+agents\google_workspace\docs.py:2: google_docs_tools.py
+agents\google_workspace\drive.py:2: google_drive_tools.py
+agents\google_workspace\forms.py:2: google_forms_tools.py
+agents\google_workspace\sheets.py:2: google_sheets_tools.py
+agents\google_workspace\slides.py:2: google_slides_tools.py
+agents\google_workspace\token_store.py:2: google_token_store.py
+agents\google_workspace\token_store.py:58: "[google_token_store] SUPABASE_URL / SUPABASE_KEY not set — "
+agents\google_workspace\token_store.py:68: _log.error("[google_token_store] Failed to create Supabase client: %s", exc)
+agents\google_workspace\token_store.py:155: _log.info("[google_token_store] Saved encrypted Google token for %s", user_email)
+agents\google_workspace\token_store.py:178: _log.error("[google_token_store] Read failed for %s: %s", user_email, exc)
+agents\google_workspace\token_store.py:194: "[google_token_store] Could not decrypt token for %s — the "
+agents\google_workspace\token_store.py:200: _log.error("[google_token_store] Corrupt token blob for %s: %s", user_email, exc)
+agents\google_workspace\token_store.py:211: _log.info("[google_token_store] Deleted Google token for %s", user_email)
+agents\google_workspace\token_store.py:213: _log.error("[google_token_store] Delete failed for %s: %s", user_email, exc)
+routes\google_oauth.py:7: Supabase (see google_token_store.py), keyed by the user's verified email.
+routes\google_oauth.py:97: from google_auth_oauthlib.flow import Flow
+scratch\feature_test.py:64: "google_drive_tools", "google_docs_tools", "google_sheets_tools",
+scratch\feature_test.py:65: "google_slides_tools", "google_forms_tools", "google_calendar_tools",
+scratch\feature_test.py:66: "google_classroom_tools", "google_auth", "google_token_store",
+scratch\feature_test.py:135: "google_drive_tools": ["search_drive_files", "upload_file_to_drive", "delete_drive_file"],
+scratch\feature_test.py:136: "google_docs_tools": ["create_google_doc", "read_google_doc"],
+scratch\feature_test.py:137: "google_sheets_tools": ["create_google_sheet", "read_sheet_range"],
+scratch\feature_test.py:138: "google_slides_tools": ["create_slides_deck", "add_slide"],
+scratch\feature_test.py:139: "google_forms_tools": ["create_google_form", "get_form_responses"],
+scratch\feature_test.py:140: "google_calendar_tools": ["create_calendar_event", "check_calendar_freebusy"],
+scratch\feature_test.py:141: "google_classroom_tools": ["create_course", "create_assignment", "grade_submission"],
+scratch\sweep_refs.py:4: google_token_store, and flags __file__/token/credential path logic inside
+scratch\sweep_refs.py:18: r"|from google_auth|import google_auth|google_token_store"
+scratch\sweep_refs.py:22: "google_calendar_tools", "google_classroom_tools", "google_docs_tools",
+scratch\sweep_refs.py:23: "google_drive_tools", "google_forms_tools", "google_sheets_tools",
+scratch\sweep_refs.py:24: "google_slides_tools", "google_auth", "google_token_store",
+subagent_loader.py:248: "google_drive_tools": [
+subagent_loader.py:265: "google_docs_tools": [
+subagent_loader.py:275: "google_sheets_tools": [
+subagent_loader.py:286: "google_slides_tools": [
+subagent_loader.py:305: "google_forms_tools": [
+subagent_loader.py:318: "google_calendar_tools": [
+subagent_loader.py:328: # MED-03: the former `google_classroom_tools` key was an exact duplicate of
+workspace\auth_setup.py:16: from google_auth_oauthlib.flow import InstalledAppFlow
+--- PATH LOGIC inside the 9 moving files ---
+google_calendar_tools.py: MISSING
+google_classroom_tools.py: MISSING
+google_docs_tools.py: MISSING
+google_drive_tools.py: MISSING
+google_forms_tools.py: MISSING
+google_sheets_tools.py: MISSING
+google_slides_tools.py: MISSING
+google_auth.py: MISSING
+google_token_store.py: MISSING

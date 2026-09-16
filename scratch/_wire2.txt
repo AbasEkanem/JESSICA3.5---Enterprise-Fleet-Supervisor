@@ -1,0 +1,38 @@
+﻿=== .env GOOGLE_WORKSPACE_* (names only) ===
+=== deepagents: SubAgent / CompiledSubAgent definitions ===
+async_subagents.py:34: class AsyncSubAgent(TypedDict):
+async_subagents.py:125: class AsyncSubAgentState(AgentState):
+async_subagents.py:833: class AsyncSubAgentMiddleware(AgentMiddleware[Any, ContextT, ResponseT]):
+subagents.py:36: class SubAgent(TypedDict):
+subagents.py:167: class CompiledSubAgent(TypedDict):
+subagents.py:608: class SubAgentMiddleware(AgentMiddleware[Any, ContextT, ResponseT]):
+=== deepagents: create_deep_agent subagents param type ===
+graph.py:274: subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
+graph.py:407: subagents: Subagent specs available to the main agent.
+graph.py:645: inline_subagents: list[SubAgent | CompiledSubAgent] = []
+graph.py:646: async_subagents: list[AsyncSubAgent] = []
+async_subagents.py:849: async_subagents: List of async subagent specifications.
+async_subagents.py:878: async_subagents: list[AsyncSubAgent],
+subagents.py:403: subagents: Sequence[SubAgent | CompiledSubAgent],
+subagents.py:412: subagents: List of raw or compiled subagent specs.
+=== router.py: which subagent names does the router know? ===
+L28: brain accepts — consolidated names like `atlassian_agent`, `docs_drive_agent`,
+L36: drive_agent             → Alex     (Google Drive files/folders)
+L37: docs_agent              → Taylor   (Google Docs)
+L38: slides_agent            → Riley    (Google Slides)
+L39: sheets_agent            → Chris    (Google Sheets)
+L40: forms_agent             → Francis  (Google Forms)
+L41: calendar_agent          → Casey    (Google Calendar)
+L42: google_classroom_agent  → Sam      (Google Classroom)
+L83: "drive_agent",
+L84: "docs_agent",
+L85: "slides_agent",
+L86: "sheets_agent",
+L87: "forms_agent",
+L88: "calendar_agent",
+L89: "google_classroom_agent",
+L90: "juliet_agent",
+L102: "drive_agent":            "[ROUTING HINT: This request involves Google Drive files/folders. Delegate to drive_agent (Alex) immediately via the task tool. NEVER search the local disk.]",
+L103: "docs_agent":             "[ROUTING HINT: This request involves a Google Doc. Delegate to docs_agent (Taylor) immediately via the task tool. NEVER search the local disk.]",
+L104: "slides_agent":           "[ROUTING HINT: This request involves Google Slides. Delegate to slides_agent (Riley) immediately via the task tool. NEVER search the local disk.]",
+L105: "sheets_agent":           "[ROUTING HINT: This request involves Google Sheets. Delegate to sheets_agent (Chris) immediately via the task tool. NEVER search the local disk.]",

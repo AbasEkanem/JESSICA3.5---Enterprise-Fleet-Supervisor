@@ -1,0 +1,195 @@
+# Google Workspace — Service Leaf Agent Registry
+#
+# This file registers the 8 leaf agents under the google_workspace supervisor.
+# Each entry maps to a compiled graph or create_agent factory in
+# agents/google_workspace/services/<service>.py.
+#
+# The google_workspace supervisor (agent.py) loads these as CompiledSubAgent
+# specs: {"name", "description", "runnable": <compiled graph>}
+
+---
+
+name: calendar_service
+description: >-
+  Google Calendar operations: create/list/get/update events, cancel (soft) /
+  delete (permanent, HITL-gated), respond to invites, check free/busy
+  availability. Resolves relative dates to absolute ISO datetimes.
+module: agents.google_workspace.services.calendar:create_calendar_graph
+runtime: langgraph
+hitl_tools:
+  - delete_calendar_event
+tools:
+  - create_calendar_event
+  - list_calendar_events
+  - get_calendar_event_details
+  - update_calendar_event
+  - delete_calendar_event
+  - cancel_calendar_event
+  - respond_to_calendar_invitation
+  - check_calendar_freebusy
+
+---
+
+name: classroom_service
+description: >-
+  Google Classroom structure: create/list/get/update/delete courses (delete
+  HITL-gated), student/teacher rosters, user invitations. Does NOT handle
+  assignments, submissions, grading, or announcements — those belong to
+  coursework_service.
+module: agents.google_workspace.services.classroom:create_classroom_agent
+runtime: langgraph
+hitl_tools:
+  - delete_course
+tools:
+  - create_course
+  - list_courses
+  - get_course_details
+  - update_course
+  - delete_course
+  - list_students
+  - list_teachers
+  - add_student_to_course
+  - remove_student_from_course
+  - invite_user_to_course
+
+---
+
+name: coursework_service
+description: >-
+  Google Classroom coursework & grading: create/list/update/delete assignments
+  (delete HITL-gated), student submissions, grading, returning work,
+  announcements, course topics. Does NOT handle course structure or rosters —
+  those belong to classroom_service.
+module: agents.google_workspace.services.coursework:create_course_graph
+runtime: langgraph
+hitl_tools:
+  - delete_coursework
+tools:
+  - create_assignment
+  - list_coursework
+  - update_coursework
+  - delete_coursework
+  - list_student_submissions
+  - get_student_submission
+  - grade_submission
+  - return_submission
+  - create_announcement
+  - list_announcements
+  - create_course_topic
+  - list_course_topics
+
+---
+
+name: docs_service
+description: >-
+  Google Docs operations: create, read, append, insert at index, find & replace,
+  delete ranges, style text (bold/italic/color/size), insert page breaks. Always
+  reads document indices before editing — never guesses insertion points.
+module: agents.google_workspace.services.docs:create_docs_graph
+runtime: langgraph
+tools:
+  - create_google_doc
+  - read_google_doc
+  - append_text_to_doc
+  - insert_text_at_index
+  - replace_text_in_doc
+  - delete_doc_text_range
+  - style_doc_text_range
+  - insert_doc_page_break
+
+---
+
+name: drive_service
+description: >-
+  Drive file management: search, upload, download, export, create folders, move,
+  rename, share (specific email), bulk share, share with anyone (HITL-gated),
+  list/revoke permissions, trash (HITL-gated), permanent delete (HITL-gated).
+module: agents.google_workspace.services.drive:create_drive_graph
+runtime: create_agent
+hitl_tools:
+  - delete_drive_file
+  - trash_drive_file
+  - share_drive_file_with_anyone
+  - bulk_share_drive_files
+tools:
+  - search_drive_files
+  - upload_file_to_drive
+  - download_file_from_drive
+  - export_drive_file
+  - create_drive_folder
+  - move_drive_file
+  - rename_drive_file
+  - share_drive_file
+  - bulk_share_drive_files
+  - share_drive_file_with_anyone
+  - list_drive_file_permissions
+  - revoke_drive_file_permission
+  - trash_drive_file
+  - delete_drive_file
+
+---
+
+name: forms_service
+description: >-
+  Google Forms operations: create forms, add text/choice questions and section
+  headers, publish (required after create — API default is unpublished), delete
+  items, read individual and all responses.
+module: agents.google_workspace.services.forms:create_forms_graph
+runtime: create_agent
+tools:
+  - create_google_form
+  - get_google_form_details
+  - publish_google_form
+  - add_text_question_to_form
+  - add_choice_question_to_form
+  - add_section_header_to_form
+  - delete_form_item
+  - get_form_responses
+  - get_single_form_response
+
+---
+
+name: sheets_service
+description: >-
+  Google Sheets operations: create spreadsheets, read/write cell ranges, batch
+  read multiple ranges, append rows, clear ranges, add/delete tabs, format cell
+  backgrounds and alignment. Uses tab-qualified A1 notation (Sheet1!A1:D10).
+module: agents.google_workspace.services.sheets:create_sheets_graph
+runtime: create_agent
+tools:
+  - create_google_sheet
+  - read_sheet_range
+  - batch_read_sheet_ranges
+  - update_sheet_range
+  - append_sheet_row
+  - clear_sheet_range
+  - add_sheet_tab
+  - delete_sheet_tab
+  - format_sheet_cells
+
+---
+
+name: slides_service
+description: >-
+  Google Slides operations: full-deck build (atomic), add/populate/duplicate/
+  reorder/delete slides, batch text replace, insert images (public HTTPS URLs
+  only) and tables, embed & refresh Sheets charts, background colors. Prefers
+  atomic tools over manual shape-ID chaining.
+module: agents.google_workspace.services.slides:create_slides_graph
+runtime: create_agent
+tools:
+  - create_slides_deck
+  - add_slide_with_content
+  - create_presentation
+  - get_presentation_details
+  - add_slide
+  - duplicate_slide
+  - delete_slide
+  - reorder_slides
+  - replace_all_text_in_slides
+  - insert_text_into_slide
+  - insert_image_onto_slide
+  - create_slide_table
+  - embed_sheets_chart_on_slide
+  - refresh_slide_sheets_chart
+  - update_slide_background_color

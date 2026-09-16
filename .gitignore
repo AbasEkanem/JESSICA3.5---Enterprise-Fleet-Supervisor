@@ -1,0 +1,55 @@
+# 
+# Jessica 3.5 — .gitignore
+# 
+
+# Environment / secrets — NEVER commit these
+.env
+.env.*
+*.env
+
+# Google credentials & OAuth tokens — NEVER commit these (live secrets)
+token.json
+credentials.json
+credentials.*.json
+credentials*.bak.json
+google_service_account*.json
+token file.txt
+
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+jessica3.0_venv/
+venv/
+.venv/
+env/
+
+# Logs
+*.log
+server_output.log
+backend_log.txt
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large generated files
+large_tool_results/
+uploads/
+workspace/
+.kilo/
+

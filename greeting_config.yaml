@@ -1,0 +1,74 @@
+# greeting_config.yaml
+# Centralized declarative configuration for the greeting endpoint.
+# Edit this file to change image prompts, styles, and fallback copy
+# without touching any Python code.
+
+# ── Personality style rotation (date-seeded, changes daily) 
+styles:
+  - "witty and clever"
+  - "bold and highly energetic"
+  - "calm and laser-focused"
+  - "mysterious and sharp"
+  - "warm and highly motivating"
+  - "visionary and futuristic"
+  - "playful and inventive"
+  - "philosophical and deep"
+  - "sharp and strategic"
+
+# ── Period-based fallback greeting copy 
+fallback_greetings:
+  dawn:      "Early start, {first_name}."
+  morning:   "Good morning, {first_name}."
+  afternoon: "Good afternoon, {first_name}."
+  evening:   "Good evening, {first_name}."
+  night:     "Still going, {first_name}?"
+  default:   "Hello, {first_name}."
+
+fallback_sublines:
+  dawn:      "You're ahead of the curve. Let's make these quiet hours count."
+  morning:   "Ready to make today count?"
+  afternoon: "What are we working on this afternoon?"
+  evening:   "What can I help you wrap up today?"
+  night:     "Late-night focus is underrated. What are we working on?"
+  default:   "How can I help?"
+
+subline_variants:
+  dawn:
+    - "Early riser — let's make today exceptional."
+    - "First light, fresh ideas. Where shall we start?"
+    - "Quiet hours are the best for deep thinking."
+    - "Good morning! The day is young and full of potential."
+  morning:
+    - "Ready to make today count?"
+    - "Let's dive into your top priorities today."
+    - "What new ideas are we bringing to life today?"
+    - "Clear mind, fresh start — what's on your agenda?"
+  afternoon:
+    - "What are we working on this afternoon?"
+    - "Midday check-in — let me help you keep momentum."
+    - "Taking on the rest of the day together."
+    - "How is your afternoon shaping up?"
+  evening:
+    - "What can I help you wrap up today?"
+    - "Winding down or building something new tonight?"
+    - "Great progress today. Let's finish strong."
+    - "Reflecting on today or planning for tomorrow?"
+  night:
+    - "Burning the midnight oil?"
+    - "Late night session — let's get things done."
+    - "Quiet evening for focused work. How can I help?"
+    - "Excited to tackle tomorrow's challenges together!"
+
+# ── Permanent background image assets (theme-matched) ──────────────────────
+fallback_images:
+  dawn:
+    - "/jessica-bg-dark.png"
+  morning:
+    - "/jessica-bg-dark.png"
+  afternoon:
+    - "/jessica-bg-dark.png"
+  evening:
+    - "/jessica-bg-dark.png"
+  night:
+    - "/jessica-bg-dark.png"
+

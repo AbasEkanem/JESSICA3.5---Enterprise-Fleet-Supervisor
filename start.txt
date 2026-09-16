@@ -1,0 +1,2 @@
+# Jessica 3.0.0 Server Startup Command
+uvicorn fastAPI_backend:app --host 0.0.0.0 --port 8000 --reload

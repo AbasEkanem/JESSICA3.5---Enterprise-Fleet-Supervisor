@@ -1,0 +1,85 @@
+circuit_breaker:
+  max_consecutive_failures: 5
+timeouts:
+  research_s: 600
+  conversation_s: 600
+  agent_hard_s: 900
+  greeting_llm_s: 15.0
+  agent_post_response_deadline_s: 15.0
+limits:
+  # Raised to 500 for maximum headroom on long multi-subagent workflows. Each
+  # task->subagent delegation runs the subagent's whole ReAct loop INLINE on this
+  # same budget (see config.py), so long pipelines (research -> analysis -> doc ->
+  # email) consume many LangGraph node transitions. recursion_limit is only an
+  # infinite-loop backstop — the real bound is the wall-clock timeout — so it is
+  # safe to keep high and lets genuine workflows finish instead of breaking.
+  conversation_recursion: 500
+  # Background/subagent tasks (background_tasks.py) previously HARDCODED
+  # recursion_limit=40 — below conversation, so the background path was the one
+  # that actually raised GraphRecursionError and lost all partial work. Kept at
+  # the conversation budget so delegated workflows get the same room.
+  background_recursion: 500
+  # Intent-routed FOCUSED budget: a CONFIDENT single-domain turn (one specific
+  # subagent per guardrails/router.py) gets this tighter recursion_limit instead
+  # of the full 500 — one subagent's inline ReAct loop is bounded work, so this
+  # is a right-sized drift detector. Fail-safe: "general" (trivial chat OR any
+  # multi-step/multi-domain workflow), low-confidence, and resume turns keep 500.
+  focused_recursion: 250
+  # Durability harness — Nemotron-3 progress-budget loop-breaker caps, PER user
+  # turn (reset each user message). Jessica's brain now runs the Nemotron-3
+  # anti-drift harness (jessica_harness.py); these raise its otherwise-tight
+  # defaults (16/48/3) so the graceful "here's what I gathered" degradation fires
+  # only on a genuinely runaway turn, not a normal long orchestration. The
+  # identical-repeat guard stays low — that one is a real stuck-loop signal.
+  harness_max_model_calls: 60
+  harness_max_tool_results: 200
+  harness_max_repeated_tool_calls: 4
+  user_rate_per_minute: 10
+  max_upload_bytes_mb: 20
+
+concurrency:
+  research_semaphore_size: 5
+  conversation_semaphore_size: 20
+  max_concurrent_agents: 20
+sse:
+  # HIGH-03: doubled 512 → 1024. Each token is a small JSON SSE frame; under
+  # slow clients (mobile, backgrounded tabs) a 512 buffer fills in seconds and
+  # forces token drops. A larger buffer absorbs bursts before backpressure hits.
+  queue_maxsize: 1024
+  keepalive_s: 15.0
+  token_put_timeout_s: 2.0
+
+cache:
+  greeting_ttl_s: 300
+  thread_history_ttl_s: 2.0
+  thread_history_maxsize: 512
+flux:
+  url: "https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.2-klein-4b"
+  width: 1024
+  height: 1024
+  steps: 4
+  retention_days: 7
+  cleanup_interval_s: 86400
+  timeout_s: 25.0
+  retry_sleep_s: 1.5
+time_periods:
+  dawn:
+    hours_start: 5
+    hours_end: 9
+    label: "Breakfast time"
+  morning:
+    hours_start: 9
+    hours_end: 12
+    label: "Mid-morning coffee"
+  afternoon:
+    hours_start: 12
+    hours_end: 17
+    label: "Lunch break"
+  evening:
+    hours_start: 17
+    hours_end: 21
+    label: "Dinner time"
+  night:
+    hours_start: 21
+    hours_end: 5
+    label: "Late night"

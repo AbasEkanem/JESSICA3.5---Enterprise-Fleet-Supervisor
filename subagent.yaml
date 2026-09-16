@@ -1,0 +1,71 @@
+# ============================================================================
+# subagent.yaml — Jessica 3.5 SUPERVISOR-OF-SUPERVISORS registry
+# ============================================================================
+# Jessica (L0) is a supervisor of supervisors. She does NOT hold the 13 flat
+# leaf agents any more — every domain leaf now lives INSIDE its compiled domain
+# supervisor (L1). Every entry below is a `runtime: deep_agent` doc pointing at
+# a zero-arg factory ("pkg.module:factory") that returns an ALREADY-COMPILED
+# graph; the loader registers each as a deepagents CompiledSubAgent
+# ({"name", "description", "runnable"}).
+#
+# Hierarchy:
+#   L0  Jessica (orchestrator; memory + datetime + background-task tools only)
+#   L1  Scout (research) · Relay (comms) · Gemma (Google Workspace) · Forge (PM)
+#   L2  each supervisor's own leaf graphs (Sophie, Jordan, Tyler, Morgan,
+#       Connie, Alex, Taylor, Riley, Chris, Francis, Casey, Sam, Juliet)
+#
+# The 13 persona names are now FLAVOR inside the supervisors — never a
+# `subagent_type` Jessica can call. Guessed/merged names are rejected.
+# ============================================================================
+
+name: research_agent
+description: >
+  Scout — Jessica's deep-research domain supervisor (carries the Sophie persona).
+  Owns ALL research work: multi-engine web search (Tavily real-time, Exa
+  academic/technical depth, Linkup structured citations), news and current
+  events, live data, fact verification, temporal grounding via datetime tools,
+  strategic reflection via think_tool, and persisting synthesized findings to
+  disk. Delegate ANY research, news, live-data, or source-backed question here
+  and ask for sources + gaps.
+runtime: deep_agent
+module: agents.research.agent:make_graph
+
+---
+
+name: comms_agent
+description: >
+  Relay — Jessica's communications domain supervisor. Owns ALL Slack and Email
+  work via its two leaf graphs: Email (Jordan persona — draft/schedule/send
+  email, read inbox, search emails, sent log) and Slack (Tyler persona —
+  messages, thread replies, DMs, channel history, reactions, user lookup).
+  Delegate any email or Slack task here. Sending/scheduling is irreversible —
+  Jessica confirms recipient and content before delegating a send.
+runtime: deep_agent
+module: agents.comms.relay:create_comms_agent
+
+---
+
+name: google_workspace_agent
+description: >
+  Gemma — Jessica's Google Workspace domain supervisor (L1). Owns ALL Drive,
+  Docs, Sheets, Slides, Forms, Calendar, and Google Classroom work via its 8
+  leaf graphs: Drive (Alex — search/upload/move/share/trash), Docs (Taylor),
+  Slides (Riley), Sheets (Chris), Forms (Francis), Calendar (Casey),
+  Classroom courses & rosters (Sam), and Classroom coursework/grading
+  (Juliet). Delegate any single-service Workspace task or ANY multi-surface /
+  cross-service workflow here — Gemma plans, chains IDs across leaves, and
+  returns one synthesised report.
+runtime: deep_agent
+module: agents.google_workspace.gemma:create_gemma_agent
+
+---
+
+name: project_mgmt_agent
+description: >
+  Forge — Jessica's project-management domain supervisor. Owns ALL Jira and
+  Confluence work via its two leaf graphs: Jira (Morgan — create/search/update/
+  transition/assign/comment on issues, default project BSE, keys like BSE-366)
+  and Confluence (Connie — create/read/update/search pages, CQL, comments).
+  Delegate any Jira or Confluence task here.
+runtime: deep_agent
+module: agents.project_mgmt.forge:create_pm_agent

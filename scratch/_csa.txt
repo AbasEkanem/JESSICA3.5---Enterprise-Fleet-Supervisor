@@ -1,0 +1,55 @@
+﻿path: C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\jessica3.0_venv\Lib\site-packages\deepagents\middleware\subagents.py
+
+class CompiledSubAgent(TypedDict):
+    """A pre-compiled agent spec.
+
+    !!! note
+
+        The `runnable`'s state schema must include a 'messages' key.
+
+        This is required for the subagent to communicate results back to
+        the main agent.
+
+    !!! note
+
+        `CompiledSubAgent` runnables are used as provided. They do not
+        inherit `create_deep_agent(state_schema=...)`; if the runnable
+        needs custom state fields, compile it with a compatible state
+        schema yourself.
+
+    When the subagent completes, the parent reads the returned state:
+    if `structured_response` is non-`None`, it is JSON-serialized and used as
+    the `ToolMessage` content; otherwise, the last non-empty `AIMessage`
+    text is used.
+
+    Examples:
+        Using `create_agent` with `response_format`:
+
+        ```python
+        from pydantic import BaseModel
+        from langchain.agents import create_agent
+
+
+        class Findings(BaseModel):
+            summary: str
+            confidence: float
+
+
+        researcher: CompiledSubAgent = {
+            "name": "researcher",
+            "description": "Researches a topic and returns findings.",
+            "runnable": create_agent(
+                "openai:gpt-5.5",
+=== deepagents top-level exports (grep CompiledSubAgent) ===
+L8: from deepagents.middleware.async_subagents import AsyncSubAgent, AsyncSubAgentMiddleware
+L12: from deepagents.middleware.subagents import (
+L13: CompiledSubAgent,
+L14: SubAgent,
+L15: SubAgentMiddleware,
+L18: GeneralPurposeSubagentProfile,
+L29: "AsyncSubAgent",
+L30: "AsyncSubAgentMiddleware",
+L31: "CompiledSubAgent",
+L36: "GeneralPurposeSubagentProfile",
+L42: "SubAgent",
+L43: "SubAgentMiddleware",

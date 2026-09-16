@@ -1,0 +1,5 @@
+﻿=== jessica_harness.py present? (must be False) ===
+Test-Path = False
+=== leftover guard symbols in JESSICA3.5.py (must be none) ===
+=== py_compile all four touched files ===
+exit=0

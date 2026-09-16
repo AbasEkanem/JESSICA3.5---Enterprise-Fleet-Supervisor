@@ -1,0 +1,20 @@
+﻿=== .env GOOGLE_WORKSPACE_* names (names only) ===
+=== deepagents: subagent spec shapes + create_deep_agent subagents param ===
+=== subagent_loader.py: how entries become runnables ===
+L5: tool callables so they can be passed directly to create_deep_agent().
+L23: # → list of dicts ready for create_deep_agent(subagents=...)
+L393: def _resolve_tools(tool_keys: list[str], agent_name: str) -> list[Any]:
+L410: def _resolve_permissions(
+L426: def _resolve_model(model_spec: Any, agent_name: str = "") -> Any:
+L487: def load_subagents(config_path: Path) -> list[dict[str, Any] | AsyncSubAgent]:
+L515: if "system_prompt" not in doc and "prompt_file" not in doc and "system_prompt_file" not in doc:
+L517: f"[subagent_loader] Subagent '{doc.get('name')}' is missing 'system_prompt' or 'prompt_file'."
+L522: # ── Resolve system_prompt from prompt_file if specified
+L524: prompt_file = doc.get("prompt_file") or doc.get("system_prompt_file")
+L525: if not prompt_file and isinstance(doc.get("system_prompt"), str) and doc["system_prompt"].endswith(".md") and "\n" not in doc["system_prompt"]:
+L526: prompt_file = doc["system_prompt"]
+L528: if prompt_file:
+L529: rel_path = Path(prompt_file)
+L537: f"[subagent_loader] Prompt file not found: {prompt_file} for agent '{name}'"
+L605: # subagent via create_agent() and never reads this key off the SubAgent
+L610: # need a code change (compile it as a CompiledSubAgent whose runnable is

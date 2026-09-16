@@ -1,0 +1,29 @@
+﻿=== does agents/google_workspace/gemma.py exist? ===
+gemma.py = False
+graph.py = False
+=== agents/google_workspace root files (non-service) ===
+
+Name               Length LastWriteTime        
+----               ------ -------------        
+AGENT.md             8071 9/15/2026 8:39:25 AM 
+agent.py             2379 9/15/2026 12:49:30 AM
+auth.py             22968 9/13/2026 7:23:50 AM 
+calendar.py         13251 9/13/2026 7:23:38 AM 
+classroom.py        20888 9/13/2026 7:23:40 AM 
+docs.py             10066 9/13/2026 7:23:41 AM 
+drive.py            19255 9/13/2026 7:23:42 AM 
+forms.py            10085 9/13/2026 7:23:44 AM 
+prompts.md          17573 9/15/2026 8:40:02 AM 
+sheets.py            9973 9/13/2026 7:23:45 AM 
+slides.py           31132 9/13/2026 7:23:48 AM 
+subagents.yaml       5726 9/15/2026 12:30:50 AM
+subagent_loader.py   3368 9/15/2026 12:46:27 AM
+token_store.py       8205 8/4/2026 12:46:32 PM 
+tools.py             9155 9/13/2026 11:31:34 AM
+__init__.py           624 9/15/2026 12:20:19 AM
+
+
+=== chat_utils subagent label map ===
+L733: "web_searcher":           "Web Searcher",
+L738: "drive_agent":            "Drive Agent",
+L947: if subagent == "web_searcher":

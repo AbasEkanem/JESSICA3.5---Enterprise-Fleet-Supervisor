@@ -1,0 +1,43 @@
+﻿C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\jessica3.0_venv\Lib\site-packages\langchain_core\utils\pydantic.py:41: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  from pydantic.v1 import BaseModel as BaseModelV1
+2026-09-15 23:44:00 [info     ] langsmith.tracing_enabled      project=jessica-production
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\loadenv.py:220: UserWarning: WARNING! reasoning_budget is not default parameter.
+                reasoning_budget was transferred to model_kwargs.
+                Please confirm that reasoning_budget is what you intended.
+  chat_model = _build_nvidia_model(
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\loadenv.py:220: UserWarning: WARNING! chat_template_kwargs is not default parameter.
+                chat_template_kwargs was transferred to model_kwargs.
+                Please confirm that chat_template_kwargs is what you intended.
+  chat_model = _build_nvidia_model(
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\jessica3.0_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\_common.py:250: UserWarning: Found nvidia/nemotron-3-ultra-550b-a55b in available_models, but type is unknown and inference may fail.
+  warnings.warn(
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\loadenv.py:344: UserWarning: WARNING! reasoning_budget is not default parameter.
+                reasoning_budget was transferred to model_kwargs.
+                Please confirm that reasoning_budget is what you intended.
+  built = _build_nvidia_model(
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\loadenv.py:344: UserWarning: WARNING! chat_template_kwargs is not default parameter.
+                chat_template_kwargs was transferred to model_kwargs.
+                Please confirm that chat_template_kwargs is what you intended.
+  built = _build_nvidia_model(
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\jessica3.0_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\_common.py:257: UserWarning: Model stepfun-ai/step-3.7-flash is unknown, check `available_models`. Inference may fail.
+  warnings.warn(
+2026-09-15 23:44:05 [warning  ] subagent.api_key_shared        note='Subagent API key collision detected. Ensure each subagent uses a unique API key in .env.' shared_with=JIRA_AGENT_API_KEY subagent=SLACK_AGENT_API_KEY
+2026-09-15 23:44:10 [warning  ] subagent.api_key_shared        note='Subagent API key collision detected. Ensure each subagent uses a unique API key in .env.' shared_with=JIRA_AGENT_API_KEY subagent=DOCS_AGENT_API_KEY
+2026-09-15 23:44:12 [warning  ] subagent.api_key_shared        note='Subagent API key collision detected. Ensure each subagent uses a unique API key in .env.' shared_with=EMAIL_AGENT_API_KEY subagent=SLIDES_AGENT_API_KEY
+2026-09-15 23:44:12 [warning  ] subagent.api_key_shared        note='Subagent API key collision detected. Ensure each subagent uses a unique API key in .env.' shared_with=WEB_SEARCHER_API_KEY subagent=SHEETS_AGENT_API_KEY
+2026-09-15 23:44:14 [warning  ] subagent.api_key_shared        note='Subagent API key collision detected. Ensure each subagent uses a unique API key in .env.' shared_with=DRIVE_AGENT_API_KEY subagent=FORMS_AGENT_API_KEY
+2026-09-15 23:44:15 [warning  ] subagent.api_key_shared        note='Subagent API key collision detected. Ensure each subagent uses a unique API key in .env.' shared_with=JIRA_AGENT_API_KEY subagent=GOOGLE_CLASSROOM_AGENT_API_KEY
+2026-09-15 23:44:17 [warning  ] subagent.missing_api_key       note='No API key provided for GOOGLE_WORKSPACE_AGENT_API_KEY in .env.' subagent=GOOGLE_WORKSPACE_AGENT_API_KEY
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\jessica3.0_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\_common.py:212: UserWarning: An API key is required for the hosted NIM. This will become an error in the future.
+  warnings.warn(
+GEMMA_MODEL_NONE: False
+GEMMA_MODEL_TYPE: ChatNVIDIA
+HAS_KEY_ATTR: False
+GEMMA_DIRECT_TOOL_COUNT: 85
+=== drive leaf gating ===
+L64: return create_agent(
+=== which leaf services gate anything? ===
+calendar.py:120: self.calendar_graph = calendar_graph.compile(checkpointer=memory, interrupt_before=["calendar_tools"])
+classroom.py:100: compiled_graph = graph_builder.compile(checkpointer=memory, interrupt_before=["classroom_tools"])
+coursework.py:104: self.course_graph = course_graph.compile(checkpointer=memory, interrupt_before=["tools"])
+docs.py:95: self.graph_builder = graph_builder.compile(checkpointer=_memory, interrupt_before=["tools"])

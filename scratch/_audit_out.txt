@@ -1,0 +1,31 @@
+﻿<unknown>:21: SyntaxWarning: "\j" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\j"? A raw string is also an option.
+<unknown>:19: SyntaxWarning: "\j" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\j"? A raw string is also an option.
+scanned_py_files=88
+local_top_level_modules=24
+syntax_errors=0
+unresolvable_imports=3
+  MISSING 'PIL' referenced 4x
+      ui\process_google_icons.py:2
+      ui\process_icons.py:2
+      ui\process_icons_v2.py:3
+      ui\process_icons_v3.py:2
+  MISSING 'jessica_harness' referenced 2x
+      JESSICA3.5.py:8
+      scratch\feature_test.py:280
+  MISSING 'rembg' referenced 1x
+      ui\process_icons_v2.py:10
+audit-exit=0
+=== registry + key files ===
+registry_docs=14
+registry_names=jira_agent,confluence_agent,email_agent,slack_agent,web_searcher,drive_agent,docs_agent,slides_agent,sheets_agent,forms_agent,calendar_agent,google_classroom_agent,juliet_agent,google_workspace_agent
+present jessica_harness.py = False
+present jessica_guard_middleware.py = False
+present agents\google_workspace\gemma.py = True
+present JESSICA.md = True
+present AGENTS.md = True
+present harness_config.yaml = True
+present langgraph.json = True
+=== workspace agents dirs ===
+analysis-synthesis
+report-and-email-delivery
+research-engine

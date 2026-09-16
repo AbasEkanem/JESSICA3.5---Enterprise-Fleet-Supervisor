@@ -1,0 +1,47 @@
+﻿=== does the memory= path exist? ===
+agents\google_workspace\GEMMA.md = True
+=== agents/google_workspace dir now ===
+
+Name               Length LastWriteTime        
+----               ------ -------------        
+AGENT.md             8461 9/15/2026 6:04:07 PM 
+agent.py             2487 9/15/2026 5:57:14 PM 
+auth.py             22968 9/13/2026 7:23:50 AM 
+calendar.py         13251 9/13/2026 7:23:38 AM 
+classroom.py        20888 9/13/2026 7:23:40 AM 
+docs.py             10066 9/13/2026 7:23:41 AM 
+drive.py            19255 9/13/2026 7:23:42 AM 
+forms.py            10085 9/13/2026 7:23:44 AM 
+GEMMA.md             1896 9/15/2026 6:05:38 PM 
+gemma.py             5753 9/15/2026 6:07:13 PM 
+prompts.md          17573 9/15/2026 8:40:02 AM 
+sheets.py            9973 9/13/2026 7:23:45 AM 
+slides.py           31132 9/13/2026 7:23:48 AM 
+subagents.yaml       5726 9/15/2026 12:30:50 AM
+subagent_loader.py   3368 9/15/2026 12:46:27 AM
+token_store.py       8205 8/4/2026 12:46:32 PM 
+tools.py             9155 9/13/2026 11:31:34 AM
+__init__.py           624 9/15/2026 12:20:19 AM
+
+
+=== deepagents default model when model=None ===
+---- L140 ----
+  
+  
+  >>> def _build_default_model() -> ChatAnthropic:
+      """Construct the default model without emitting a deprecation warning.
+  
+      Internal helper used by `create_deep_agent` so the parameter-level
+      `model=None` warning isn't paired with a separate function-level warning
+      from `get_default_model`. Direct user calls go through `get_default_model`,
+      which keeps its decorator and warns once per process.
+---- L179 ----
+          `ChatAnthropic` instance configured with `claude-sonnet-4-6`.
+      """
+  >>>     return _build_default_model()
+  
+  
+  def _merge_fs_interrupt_on(
+      fs_interrupt_on: dict[str, InterruptOnConfig],
+      user_interrupt_on: dict[str, bool | InterruptOnConfig] | None,
+  ) -> dict[str, bool | InterruptOnConfig] | None:

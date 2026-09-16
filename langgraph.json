@@ -1,0 +1,10 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./agent.py:graph",
+    "jessica": "./JESSICA3.5.py:make_graph"
+  },
+  "env": ".env",
+  "recursion_limit": 1000
+}
+

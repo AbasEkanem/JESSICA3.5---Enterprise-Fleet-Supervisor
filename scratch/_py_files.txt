@@ -1,0 +1,35 @@
+﻿
+FullName                                                                                      Length
+--------                                                                                      ------
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\agent.py                 2379
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\auth.py                 22968
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\calendar.py             13251
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\classroom.py            20888
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\docs.py                 10066
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\drive.py                19255
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\forms.py                10085
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\sheets.py                9973
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\slides.py               31132
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\subagent_loader.py       3368
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\token_store.py           8205
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\tools.py                 9155
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\__init__.py               624
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\calendar.py     5559
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\classroom.py    3875
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\coursework.py   4236
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\docs.py         3632
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\drive.py        2630
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\forms.py        2573
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\sheets.py       2360
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\slides.py       2481
+C:\Users\Bussiness Sensor\Desktop\jessica3.0.0\agents\google_workspace\services\__init__.py      327
+
+
+
+Name            LastWriteTime       
+----            -------------       
+20260820T192057 8/20/2026 7:21:09 PM
+20260615T131924 6/15/2026 1:33:07 PM
+20260615T133306 6/15/2026 1:33:06 PM
+
+
