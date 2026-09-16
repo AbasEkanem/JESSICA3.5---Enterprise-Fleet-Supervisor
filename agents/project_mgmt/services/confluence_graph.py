@@ -47,8 +47,8 @@ class _ConfluenceState(TypedDict):
 
 class _ConfluenceGraph:
     def __init__(self, model=None, system_prompt: str = ""):
-        from loadenv import project_mgmt_agent_model as _default_model  # type: ignore
-        chat_model = model or _default_model
+        from loadenv import confluence_agent_model, project_mgmt_agent_model  # type: ignore
+        chat_model = model or confluence_agent_model or project_mgmt_agent_model
         if chat_model is None:
             raise RuntimeError("[confluence_service] No model available.")
 

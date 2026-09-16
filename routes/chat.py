@@ -715,7 +715,8 @@ async def ask(
             # fires first and its clean general-fallback is used, instead of us
             # cancelling it here.
             try:
-                routing_decision = await asyncio.wait_for(routing_task, timeout=7.0)
+                _outer_router_timeout = float(os.getenv("ROUTING_OUTER_TIMEOUT_S", "25.0"))
+                routing_decision = await asyncio.wait_for(routing_task, timeout=_outer_router_timeout)
                 routing_hint = get_routing_hint(routing_decision)
             except Exception:
                 routing_hint = ""

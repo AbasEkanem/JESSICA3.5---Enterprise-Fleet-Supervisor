@@ -1,0 +1,8 @@
+CLASS used=37 defined=37
+CLASS_MISSING: 
+CLASS_UNUSED : 
+VAR used=22 defined=23
+VAR_UNDEFINED: 
+VAR_UNUSED   : --j-violet
+HAS_PROPERTY_SPIN: True
+KEYFRAMES: auroraIn, drift, grainIn, travel, twinkle, meshIn, pulse, spin, panelIn, breathe, ping, draw, ignite, markGlow, sweep, halo

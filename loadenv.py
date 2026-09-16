@@ -320,11 +320,19 @@ def _build_subagent_model(
     # Reasoning models handle thinking natively; the reliable lever we DO have
     # for clean, structured tool calls is low sampling (temperature/top_p below).
 
+    temp_env = os.getenv(env_model_key.replace("_MODEL_ID", "_TEMPERATURE"))
+    top_p_env = os.getenv(env_model_key.replace("_MODEL_ID", "_TOP_P"))
+    max_tokens_env = os.getenv(env_model_key.replace("_MODEL_ID", "_MAX_TOKENS"))
+
+    subagent_temp = float(temp_env) if temp_env is not None else 0.2
+    subagent_top_p = float(top_p_env) if top_p_env is not None else 0.95
+    subagent_max_tokens = int(max_tokens_env) if max_tokens_env is not None else 8192
+
     if any(p in model_name.lower() for p in ("anthropic/", "openrouter/", "claude-", "sonnet")):
         or_kwargs: dict[str, Any] = {
             "model": model_name,
-            "temperature": 0,
-            "max_tokens": 1024,
+            "temperature": subagent_temp,
+            "max_tokens": subagent_max_tokens if subagent_max_tokens <= 4096 else 4096,
             "max_retries": 2,
         }
         if clean_key:
@@ -333,7 +341,7 @@ def _build_subagent_model(
     elif "gemini" in model_name.lower():
         g_kwargs: dict[str, Any] = {
             "model": model_name,
-            "temperature": 0.3,
+            "temperature": subagent_temp,
             "max_retries": _DEFAULT_MAX_RETRIES,
         }
         if clean_key:
@@ -344,17 +352,11 @@ def _build_subagent_model(
         built = _build_nvidia_model(
             model=model_name,
             api_key=clean_key,
-            temperature=0.3,
-            top_p=0.95,
-            # Mirror the brain's headroom (32768 > 16384): max_tokens is the TOTAL
-            # output ceiling and reasoning_budget is how much hidden reasoning may
-            # consume. Keeping them EQUAL (the old 16384==16384) let a thinking
-            # subagent spend its whole budget on reasoning and terminate with a
-            # BLANK visible answer — the exact starvation that made subagents loop.
-            # A ceiling only prevents premature truncation; it adds no latency to
-            # healthy turns. Belt-and-suspenders: _build_nvidia_model also enforces
-            # max_tokens > reasoning_budget, so this is auto-corrected even if edited.
-            max_tokens=32768,
+            temperature=subagent_temp,
+            top_p=subagent_top_p,
+            # Mirror the brain's headroom (32768 > 16384) for Nemotron thinking models;
+            # use tuned max_tokens for non-nemotron models (e.g. z-ai/glm-5.3).
+            max_tokens=32768 if is_nemotron else subagent_max_tokens,
             enable_thinking=is_nemotron,
             reasoning_budget=16384 if is_nemotron else None,
             chat_template_kwargs={"enable_thinking": True} if is_nemotron else None,
@@ -431,15 +433,11 @@ research_agent_model          = _safe_build_subagent_model("RESEARCH_AGENT_MODEL
 _routing_key = os.getenv("ROUTING_MODEL_API_KEY", "").strip()
 try:
     routing_model = _build_nvidia_model(
-        # Default switched off mistralai/mistral-medium-3.5-128b: it reached
-        # end-of-life on 2026-08-07 and now returns [410] Gone on every call,
-        # which spammed router.error and cost ~4s per turn before failing safe.
-        model=os.getenv("ROUTING_MODEL_ID", "nvidia/nemotron-3-super-120b-a12b"),
+        model=os.getenv("ROUTING_MODEL_ID", "z-ai/glm-5.3"),
         api_key=_routing_key,
-
-        temperature=0.1,
-        top_p=0.9,
-        max_tokens=128,
+        temperature=float(os.getenv("ROUTING_MODEL_TEMPERATURE", "0.1")),
+        top_p=float(os.getenv("ROUTING_MODEL_TOP_P", "0.95")),
+        max_tokens=int(os.getenv("ROUTING_MODEL_MAX_TOKENS", "256")),
     )
 except Exception as exc:  # pragma: no cover - defensive startup guard
     logger.warning("routing_model.build_failed", error=str(exc))

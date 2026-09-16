@@ -39,6 +39,7 @@ merged names like `atlassian_agent` DO NOT EXIST and are rejected by the
 from __future__ import annotations
 
 import asyncio
+import os
 import time
 from typing import Literal
 
@@ -54,14 +55,7 @@ logger = structlog.get_logger(__name__)
 _CONFIDENCE_THRESHOLD = 0.70
 
 # ── Router timeout (must finish before main agent can begin) ──────────────────
-# HIGH-04: raised 4.0 → 6.0. The router runs on a dense 128B model
-# (mistral-medium-3.5) whose first-token latency under NVIDIA NIM load or
-# cold-start can reach 2–6 s. At 4.0 s a cold router timed out and fell back to
-# confidence=0.0 (no hint) on requests that would otherwise have routed cleanly.
-# The caller's outer asyncio.wait_for in routes/chat.py must stay ABOVE this
-# value (raised to 7.0 s there) so the router's own timeout fires first and its
-# clean general-fallback path is used, rather than the caller cancelling it.
-_ROUTER_TIMEOUT_S = 6.0
+_ROUTER_TIMEOUT_S = float(os.getenv("ROUTING_TIMEOUT_S", "20.0"))
 
 
 # ── Subagent type literal ─────────────────────────────────────────────────────

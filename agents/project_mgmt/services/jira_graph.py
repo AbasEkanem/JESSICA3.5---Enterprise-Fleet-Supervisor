@@ -50,8 +50,8 @@ class _JiraState(TypedDict):
 
 class _JiraGraph:
     def __init__(self, model=None, system_prompt: str = ""):
-        from loadenv import project_mgmt_agent_model as _default_model  # type: ignore
-        chat_model = model or _default_model
+        from loadenv import jira_agent_model, project_mgmt_agent_model  # type: ignore
+        chat_model = model or jira_agent_model or project_mgmt_agent_model
         if chat_model is None:
             raise RuntimeError("[jira_service] No model available.")
 

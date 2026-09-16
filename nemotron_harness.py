@@ -304,13 +304,25 @@ class NemotronTemporalFrameMiddleware(AgentMiddleware):
 # 3. ChatNVIDIA wire compatibility — mirror tool-call fields the endpoint needs
 # ─────────────────────────────────────────────────────────────────────────────
 def _to_openai_tool_calls(tool_calls: list) -> list[dict]:
-    return [
-        {
-            "type": "function",
-            "function": {"name": call.get("name", ""), "arguments": json.dumps(call.get("args", {}) or {})},
-        }
-        for call in tool_calls
-    ]
+    """Mirror LangChain tool_calls to the OpenAI/NIM wire shape.
+
+    The `id` is LOAD-BEARING and must be carried through: the endpoint rejects an
+    assistant `tool_calls[]` entry with no `id` (`[400] missing field id`), and
+    the id is also what pairs this call to its ToolMessage (`tool_call_id`) on
+    replay. A repaired call already carries its synthetic id (`nh_repair_*`); a
+    server-parsed one carries the endpoint's. Only a malformed call reaches the
+    `nh_call_*` fallback — still a valid, unique id, never an omission.
+    """
+    result: list[dict] = []
+    for i, call in enumerate(tool_calls):
+        result.append(
+            {
+                "id": call.get("id") or f"nh_call_{i}",
+                "type": "function",
+                "function": {"name": call.get("name", ""), "arguments": json.dumps(call.get("args", {}) or {})},
+            }
+        )
+    return result
 
 
 def _content_is_empty(message: Any) -> bool:
@@ -373,7 +385,18 @@ class NemotronWireCompatibilityMiddleware(AgentMiddleware):
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. Tool-call repair — recover calls the NIM parser left as text
 # ─────────────────────────────────────────────────────────────────────────────
-_TOOLCALL_TAG_RE = re.compile(r"<TOOLCALL>\s*(\{.*?\})\s*</TOOLCALL>", re.DOTALL)
+# Envelope spelling is NOT stable across Nemotron builds: the NIM template emits
+# the Hermes-style lowercase `<tool_call>`, while older/other specs emit
+# `<TOOLCALL>`. Matching only the uppercase form meant the real production tag
+# was never recognised — the call could not be repaired AND the raw tag leaked
+# into the user-visible answer. `tool_?call` + IGNORECASE covers every observed
+# spelling (<tool_call>, <TOOLCALL>, <toolcall>, <TOOL_CALL>).
+_TOOLCALL_TAG_RE = re.compile(r"<tool_?call>\s*(\{.*?\})\s*</tool_?call>", re.DOTALL | re.IGNORECASE)
+# A HALF-consumed envelope: the server-side parser ate one tag and left its
+# partner behind (most often the closer, after it consumed `<tool_call>` and the
+# JSON body). Anchored to a line of its own so an envelope tag mentioned INSIDE
+# prose is never destroyed — the leftover text is user-visible content.
+_ORPHAN_TAG_RE = re.compile(r"^[ \t]*</?tool_?call>[ \t]*$\n?", re.IGNORECASE | re.MULTILINE)
 _FENCED_JSON_RE = re.compile(r"```(?:json)?\s*(\{.*?\}|\[.*?\])\s*```", re.DOTALL)
 _WHOLE_JSON_RE = re.compile(r"^\s*(\{.*\})\s*$", re.DOTALL)
 # A truncated whole-message call has NO closing brace — `{...` with the JSON cut
@@ -446,17 +469,35 @@ def _parse_call_obj(obj: Any) -> dict | None:
     return {"name": name.strip(), "args": args if isinstance(args, dict) else {}, "type": "tool_call"}
 
 
+def _strip_orphan_tags(text: str) -> str:
+    """Remove envelope tags left stranded on their own line by a partial parse.
+
+    Line-anchored on purpose: `<tool_call>` written inside a sentence is prose,
+    not an envelope, and must survive — this runs on text that becomes the
+    user-visible answer.
+    """
+    return _ORPHAN_TAG_RE.sub("", text)
+
+
 def _candidates_from_text(text: str) -> list[dict]:
     """All tool-call-shaped candidates in `text`, most-specific envelope first."""
     candidates: list[dict] = []
+    # NOTE: `_parse_call_obj` takes a DICT. Both envelope branches capture a raw
+    # JSON *string*, so they must be deserialised first — passing the string
+    # straight in silently returned None and made both branches dead code.
     for match in _TOOLCALL_TAG_RE.finditer(text):
-        call = _parse_call_obj(match.group(1))
+        raw = match.group(1)
+        call = _parse_call_obj(_loads_or_None(raw)) or _parse_call_obj(_loads_or_None(_balance_json(raw)))
         if call:
             candidates.append(call)
     for match in _FENCED_JSON_RE.finditer(text):
-        call = _parse_call_obj(match.group(1))
+        raw = match.group(1)
+        call = _parse_call_obj(_loads_or_None(raw)) or _parse_call_obj(_loads_or_None(_balance_json(raw)))
         if call:
             candidates.append(call)
+    # A stranded partner tag makes the whole-message branches below fail to
+    # parse (the JSON no longer reaches end-of-string), so drop it first.
+    text = _strip_orphan_tags(text)
     whole = _WHOLE_JSON_RE.match(text)
     if whole:
         raw = whole.group(1)
@@ -486,6 +527,9 @@ def _strip_call_text(text: str) -> str:
     """Content that remains after removing every envelope region (best effort)."""
     leftover = _TOOLCALL_TAG_RE.sub("", text)
     leftover = _FENCED_JSON_RE.sub("", leftover)
+    # Must precede the whole-JSON strip: a stranded tag keeps the JSON from
+    # reaching end-of-string, which would leave the blob in the visible answer.
+    leftover = _strip_orphan_tags(leftover)
     leftover = _WHOLE_JSON_RE.sub("", leftover)
     return leftover.strip()
 class NemotronToolCallRepairState(AgentState):
