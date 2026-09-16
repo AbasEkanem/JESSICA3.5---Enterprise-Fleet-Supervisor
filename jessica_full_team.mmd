@@ -1,0 +1,102 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: "#121a23"
+    primaryTextColor: "#e9eef4"
+    primaryBorderColor: "#5c93f5"
+    lineColor: "#5c93f5"
+    secondaryColor: "#1a242f"
+    tertiaryColor: "#0d141c"
+    background: "#0d141c"
+    mainBkg: "#121a23"
+    clusterBkg: "#1a242f"
+    clusterBorder: "#3fcbb6"
+    titleColor: "#e9eef4"
+    edgeLabelBackground: "#1a242f"
+    fontFamily: "Inter, system-ui, sans-serif"
+  flowchart:
+    curve: basis
+    padding: 20
+---
+flowchart TD
+    %% ── L0 Orchestrator ─────────────────────────────────────────────────────
+    J["Jessica 3.5
+Orchestrator — L0
+(memory · datetime · bg-tasks)"]
+
+    %% ── L1 Domain Supervisors ───────────────────────────────────────────────
+    subgraph SCOUT["Scout — Research Supervisor"]
+        direction TB
+        Sophie["Sophie
+Multi-engine search
+Tavily · Exa · Linkup
+Fact-check · News"]
+    end
+
+    subgraph RELAY["Relay — Comms Supervisor"]
+        direction TB
+        Jordan["Jordan
+Email
+draft · schedule · send
+read · search"]
+        Tyler["Tyler
+Slack
+messages · threads
+DMs · reactions"]
+    end
+
+    subgraph GEMMA["Gemma — Google Workspace Supervisor"]
+        direction LR
+        Alex["Alex
+Drive
+search · upload
+share · trash"]
+        Taylor["Taylor
+Docs"]
+        Riley["Riley
+Slides"]
+        Chris["Chris
+Sheets"]
+        Francis["Francis
+Forms"]
+        Casey["Casey
+Calendar"]
+        Sam["Sam
+Classroom
+courses · rosters"]
+        Juliet["Juliet
+Classroom
+coursework · grades"]
+    end
+
+    subgraph FORGE["Forge — Project Mgmt Supervisor"]
+        direction TB
+        Morgan["Morgan
+Jira
+issues · sprints
+transitions · BSE"]
+        Connie["Connie
+Confluence
+pages · CQL
+comments"]
+    end
+
+    %% ── Edges L0 → L1 ───────────────────────────────────────────────────────
+    J -->|"research_agent"| SCOUT
+    J -->|"comms_agent"| RELAY
+    J -->|"google_workspace_agent"| GEMMA
+    J -->|"project_mgmt_agent"| FORGE
+
+    %% ── Style classes ────────────────────────────────────────────────────────
+    classDef l0 fill:#5c93f5,color:#06101f,stroke:#5c93f5,font-weight:bold,font-size:14px
+    classDef scout fill:#3fcbb6,color:#05080c,stroke:#3fcbb6
+    classDef relay fill:#8f7bf8,color:#fff,stroke:#8f7bf8
+    classDef gemma fill:#5c93f5,color:#fff,stroke:#5c93f5
+    classDef forge fill:#f5a35c,color:#06101f,stroke:#f5a35c
+
+    class J l0
+    class Sophie scout
+    class Jordan,Tyler relay
+    class Alex,Taylor,Riley,Chris,Francis,Casey,Sam,Juliet gemma
+    class Morgan,Connie forge
