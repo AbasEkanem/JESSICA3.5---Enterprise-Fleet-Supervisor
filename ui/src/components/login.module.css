@@ -1,5 +1,12 @@
 /* Jessica 3.5 — sign in. Dark only. */
 
+/* ---------- animated angle: powers the panel's rotating gradient ring ---------- */
+@property --j-spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .page {
   --j-bg: #0d141c;
   --j-bg-deep: #05080c;
@@ -12,15 +19,27 @@
   --j-accent: #5c93f5;
   --j-accent-ink: #06101f;
   --j-accent-soft: rgba(92, 147, 245, 0.2);
+  --j-accent-line: rgba(92, 147, 245, 0.55);
   --j-signal: #3fcbb6;
+  --j-signal-line: rgba(63, 203, 182, 0.45);
+  --j-violet: #8f7bf8;
+  --j-violet-line: rgba(143, 123, 248, 0.42);
   --j-mesh: #cfe0f5;
   --j-mesh-opacity: 0.12;
   --j-panel-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 24px 60px -16px rgba(0, 0, 0, 0.7);
   --j-raise-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 
+  /* Live cursor position, written by the component's pointer listener.
+     Percentages are the resting state so the spotlight reads well before
+     the first move (and on touch devices, where it is never updated). */
+  --j-mx: 50%;
+  --j-my: 34%;
+
   color-scheme: dark;
   position: relative;
   isolation: isolate;
+  /* Depth for the pointer tilt carried by .panelTilt below. */
+  perspective: 1400px;
   min-height: 100dvh;
   display: grid;
   place-items: center;
@@ -31,6 +50,80 @@
     Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+}
+
+/* ---------- atmospheric backdrop ---------- */
+
+/* Aurora field: three drifting colour clouds that give the flat radial
+   background real depth. Transform-only animation keeps it on the
+   compositor — no blur filter, so nothing repaints per frame. */
+.aurora {
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  background:
+    radial-gradient(38% 30% at 22% 18%, rgba(92, 147, 245, 0.22) 0%, transparent 68%),
+    radial-gradient(32% 26% at 81% 26%, rgba(63, 203, 182, 0.14) 0%, transparent 70%),
+    radial-gradient(44% 34% at 62% 86%, rgba(143, 123, 248, 0.16) 0%, transparent 72%);
+  opacity: 0;
+  animation:
+    auroraIn 2400ms ease-out 80ms forwards,
+    drift 28s ease-in-out 2400ms infinite alternate;
+}
+
+@keyframes auroraIn {
+  to { opacity: 1; }
+}
+
+@keyframes drift {
+  from { transform: translate3d(-2%, -1.5%, 0) scale(1.04); }
+  to   { transform: translate3d(2.5%, 2%, 0) scale(1.1); }
+}
+
+/* Cursor spotlight. Follows --j-mx/--j-my, which the component writes on
+   pointermove (rAF-throttled). Sits above the mesh so it reads as light
+   catching the network rather than a separate object. */
+.spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    460px 460px at var(--j-mx) var(--j-my),
+    rgba(92, 147, 245, 0.11) 0%,
+    rgba(92, 147, 245, 0.05) 34%,
+    transparent 68%
+  );
+  opacity: 1;
+  transition: opacity 600ms ease;
+}
+/* Fade the spotlight out when the cursor has left the page. The JS sets
+   data-spot="off" on pointerleave; "on" (or absent) keeps full opacity. */
+:global([data-spot="off"]) .spotlight {
+  opacity: 0;
+}
+
+/* Fine grain. Also does real work: a 24px-deep radial gradient across a
+   full viewport reliably bands on 8-bit panels, and the tiled noise breaks
+   the banding up without touching the palette. Kept last in the background
+   stack so it sits over every other -1 layer. */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: grainIn 1800ms ease-out 600ms forwards;
+}
+
+@keyframes grainIn {
+  from { opacity: 0; }
+  to   { opacity: 0.04; }
 }
 
 /* ---------- neural mesh backdrop ---------- */
@@ -50,6 +143,64 @@
   width: 100%;
   height: 100%;
   display: block;
+}
+
+/* Second mesh layer: a responsive vector layer (viewBox + slice) carrying
+   the flowing signal traces and node stars. Kept separate from .meshSvg
+   because that one is viewBox-less so its <pattern> tiles stay square. */
+.traceSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: var(--j-accent);
+}
+
+/* Static rail: the wire the light runs along. Barely visible on its own —
+   its only job is to stop the travelling dash reading as a floating fragment. */
+.traceRail {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.14;
+}
+
+/* A short dash crawling along a long gap = a signal travelling the wire.
+   dasharray (130) + gap must exceed the path length (~2230 here) so exactly
+   one pulse is in flight at a time and the loop is seamless. */
+.trace {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-dasharray: 130 2100;
+  animation: travel 11s linear infinite;
+}
+/* Second wire: dimmer and slower so the two never sync into a single pulse.
+   Matched with .trace + .trace, NOT :nth-of-type(2) — the rail and both
+   traces are sibling <path>s, so nth-of-type(2) counts the rail and the
+   second trace would never receive this rule. */
+.trace + .trace {
+  stroke-dasharray: 90 2100;
+  stroke-width: 1;
+  animation-duration: 15s;
+  animation-delay: 3.2s;
+}
+
+@keyframes travel {
+  to { stroke-dashoffset: -2230; }
+}
+
+.star {
+  fill: var(--j-mesh);
+  opacity: 0.4;
+  animation: twinkle 6s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.14; }
+  50%      { opacity: 0.58; }
 }
 
 .pulse {
@@ -76,6 +227,7 @@
 /* ---------- panel ---------- */
 
 .panel {
+  position: relative;
   width: min(100%, 416px);
   background: var(--j-surface);
   border-radius: 22px;
@@ -83,12 +235,64 @@
   box-shadow: var(--j-panel-shadow);
   text-align: center;
   opacity: 0;
-  transform: translateY(12px);
+  /* The lift-in animates the independent `translate` property, which leaves
+     `transform` free for the pointer tilt below. The two compose instead of
+     overwriting each other, so the tilt survives the entry animation's
+     filled forwards state without needing a wrapper element — and .page's
+     perspective gives the rotateX/Y real depth. */
+  translate: 0 12px;
+  transform: rotateX(var(--j-tilt-x, 0deg)) rotateY(var(--j-tilt-y, 0deg));
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
   animation: panelIn 620ms cubic-bezier(0.22, 1, 0.36, 1) 60ms forwards;
 }
 
+/* Rotating gradient ring. Drawn as a 1px conic-gradient border via the
+   mask-composite technique rather than border-image, so it inherits the
+   panel's exact border-radius and the arc can still be animated by
+   transitioning the registered --j-spin angle. */
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--j-spin),
+    transparent 0deg,
+    var(--j-accent-line) 38deg,
+    var(--j-signal-line) 86deg,
+    transparent 150deg,
+    transparent 216deg,
+    var(--j-violet-line) 276deg,
+    transparent 342deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: spin 16s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to { --j-spin: 360deg; }
+}
+
+/* Top sheen: one hairline that reads as light catching a glass edge. */
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16%;
+  right: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(207, 224, 245, 0.3), transparent);
+  pointer-events: none;
+}
+
 @keyframes panelIn {
-  to { opacity: 1; transform: none; }
+  to { opacity: 1; translate: 0 0; }
 }
 
 .markWrap {
@@ -106,6 +310,37 @@
   inset: -18px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--j-accent-soft) 0%, transparent 66%);
+  animation: breathe 6.4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.75; transform: scale(0.96); }
+  50%      { opacity: 1;    transform: scale(1.05); }
+}
+
+/* Radar pings. Fixed 92px circles centred on the wrap (which is 128x104, so
+   inset:0 would have produced ellipses) — margin offsets rather than a
+   transform, because the animation needs transform to itself for scaling. */
+.ping {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  border-radius: 50%;
+  border: 1px solid var(--j-accent-line);
+  opacity: 0;
+  transform: scale(0.42);
+  animation: ping 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  pointer-events: none;
+}
+.ping:nth-of-type(2) { animation-delay: 2.4s; }
+
+@keyframes ping {
+  0%   { opacity: 0;    transform: scale(0.42); }
+  16%  { opacity: 0.5; }
+  100% { opacity: 0;    transform: scale(1.16); }
 }
 
 .mark {
@@ -115,6 +350,52 @@
   color: var(--j-ink);
 }
 
+/* Mark boot sequence: the connection network draws itself in, then the 15
+   nodes ignite in order — the same "bring the fleet online" beat the rest of
+   the screen plays, echoing the "Initializing workspace…" button copy.
+   pathLength={100} on the links path normalises its length, so the dash
+   draw-in is exact regardless of the real (very long) geometry. */
+.markLinks path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 1900ms cubic-bezier(0.22, 1, 0.36, 1) 260ms forwards;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* fill-mode backwards holds the un-lit state through each node's delay, so
+   the staggered delays below read as ignition rather than a late fade-in. */
+.markNodes circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ignite 760ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes ignite {
+  from { opacity: 0; transform: scale(0.25); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 15 nodes, 60ms apart: the topology lights up in one sweep instead of all
+   at once, so the eye is drawn across the network as it forms. */
+.markNodes circle:nth-child(1)  { animation-delay: 300ms; }
+.markNodes circle:nth-child(2)  { animation-delay: 360ms; }
+.markNodes circle:nth-child(3)  { animation-delay: 420ms; }
+.markNodes circle:nth-child(4)  { animation-delay: 480ms; }
+.markNodes circle:nth-child(5)  { animation-delay: 540ms; }
+.markNodes circle:nth-child(6)  { animation-delay: 600ms; }
+.markNodes circle:nth-child(7)  { animation-delay: 660ms; }
+.markNodes circle:nth-child(8)  { animation-delay: 720ms; }
+.markNodes circle:nth-child(9)  { animation-delay: 780ms; }
+.markNodes circle:nth-child(10) { animation-delay: 840ms; }
+.markNodes circle:nth-child(11) { animation-delay: 900ms; }
+.markNodes circle:nth-child(12) { animation-delay: 960ms; }
+.markNodes circle:nth-child(13) { animation-delay: 1020ms; }
+.markNodes circle:nth-child(14) { animation-delay: 1080ms; }
+.markNodes circle:nth-child(15) { animation-delay: 1140ms; }
+
 /* Raster fallback: knocks the logo's black plate out against the dark panel. */
 .markImage {
   position: relative;
@@ -123,12 +404,98 @@
   mix-blend-mode: screen;
 }
 
+/* Once the boot sweep finishes the mark itself picks up a slow accent glow,
+   so the panel reads as "live" rather than a static logo. (No separate halo
+   element is needed - .markWrap::before already breathes behind the mark.) */
+.markPulse {
+  animation: markGlow 5.5s ease-in-out 1600ms infinite;
+}
+
+@keyframes markGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+  50%      { filter: drop-shadow(0 0 10px var(--j-accent-soft)); }
+}
+
 .title {
   margin: 0;
   font-size: 27px;
   line-height: 1.16;
   font-weight: 600;
   letter-spacing: -0.024em;
+}
+
+/* Ink → accent → signal sweep across the product name. Guarded by @supports
+   because background-clip:text with a transparent fill would render the text
+   invisible on an engine that ignores the clip. */
+.titleAccent {
+  background-image: linear-gradient(
+    96deg,
+    var(--j-ink) 0%,
+    var(--j-accent) 54%,
+    var(--j-signal) 100%
+  );
+  background-size: 200% 100%;
+  animation: sweep 9s ease-in-out infinite alternate;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .titleAccent {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+@keyframes sweep {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+/* Fleet status chip — a live pulse plus a nod to the real topology
+   (Jessica supervises 4 domain supervisors; see subagent.yaml). */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 26px;
+  padding: 6px 13px;
+  border: 1px solid rgba(63, 203, 182, 0.22);
+  border-radius: 999px;
+  background: rgba(63, 203, 182, 0.06);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--j-muted);
+  white-space: nowrap;
+}
+
+.statusDot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--j-signal);
+  box-shadow: 0 0 8px 1px rgba(63, 203, 182, 0.7);
+}
+
+.statusDot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--j-signal);
+  animation: halo 2.6s ease-out infinite;
+}
+
+@keyframes halo {
+  0%   { opacity: 0.7; transform: scale(1); }
+  70%  { opacity: 0;   transform: scale(3.4); }
+  100% { opacity: 0;   transform: scale(3.4); }
+}
+
+.statusSep {
+  color: rgba(109, 124, 140, 0.6);
 }
 
 
@@ -148,6 +515,7 @@
 }
 
 .google {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,10 +523,14 @@
   background: var(--j-field);
   color: var(--j-ink);
   cursor: pointer;
-  box-shadow: var(--j-raise-shadow);
-  transition: background 160ms ease, transform 160ms ease;
+  box-shadow: var(--j-raise-shadow), inset 0 1px 0 rgba(233, 238, 244, 0.05);
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
-.google:hover { background: var(--j-field-hover); }
+.google:hover {
+  background: var(--j-field-hover);
+  box-shadow: var(--j-raise-shadow), inset 0 1px 0 rgba(233, 238, 244, 0.07),
+    0 0 0 1px rgba(92, 147, 245, 0.18);
+}
 .google:active { transform: scale(0.988); }
 
 .googleMark {
@@ -175,13 +547,21 @@
   color: var(--j-faint);
   font-size: 13px;
 }
-.divider::before,
+/* Gradient rather than a flat hairline: fades away from the label instead of
+   stopping dead, which reads as an intentional rule rather than a border. */
+.divider::before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor);
+  opacity: 0.3;
+}
 .divider::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: currentColor;
-  opacity: 0.28;
+  background: linear-gradient(270deg, transparent, currentColor);
+  opacity: 0.3;
 }
 
 .field {
@@ -198,26 +578,59 @@
   color: var(--j-ink);
   padding: 0 16px;
   outline: none;
+  box-shadow: inset 0 1px 0 rgba(233, 238, 244, 0.04);
   transition: background 160ms ease, box-shadow 160ms ease;
 }
 .email::placeholder { color: var(--j-faint); }
 .email:hover { background: var(--j-field-hover); }
+/* Layered glow instead of the flat single ring: crisp accent edge, soft
+   spread, then a wide bloom — so focus is obvious without the ring reading
+   as a hard border. */
 .email:focus-visible {
   background: var(--j-field-hover);
-  box-shadow: 0 0 0 2px var(--j-accent);
+  box-shadow:
+    0 0 0 2px var(--j-accent),
+    0 0 0 6px rgba(92, 147, 245, 0.13),
+    0 0 24px -4px rgba(92, 147, 245, 0.55);
 }
 
 .submit {
+  position: relative;
+  overflow: hidden;
   margin-top: 10px;
   background: var(--j-accent);
   color: var(--j-accent-ink);
   font-weight: 600;
   cursor: pointer;
-  transition: filter 160ms ease, transform 160ms ease;
+  box-shadow: 0 6px 20px -8px rgba(92, 147, 245, 0.8);
+  transition: filter 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
-.submit:hover:not(:disabled) { filter: brightness(1.08); }
+
+/* Light sweeping across the button face on hover. Lives on the overflow-
+   hidden .submit so the skewed highlight is clipped to the rounded rect. */
+.submit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  transform: skewX(-18deg);
+  transition: left 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.submit:hover:not(:disabled)::after { left: 130%; }
+.submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 10px 28px -8px rgba(92, 147, 245, 0.95);
+}
 .submit:active:not(:disabled) { transform: scale(0.988); }
-.submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 .back {
   margin: 14px 0 0;
@@ -284,13 +697,48 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .panel, .mesh { animation-duration: 1ms; animation-delay: 0ms; }
-  .pulse { animation: none; opacity: 0.55; }
-  .google, .submit, .email { transition: none; }
+  /* Enter-animations: collapse to their end state so nothing blinks. */
+  .panel,
+  .mesh { animation-duration: 1ms; animation-delay: 0ms; }
+
+  /* Decorative loops: stop them outright. */
+  .pulse,
+  .star,
+  .ping,
+  .titleAccent,
+  .markWrap::before,
+  .panel::before { animation: none; }
+
+  /* The aurora's base opacity is 0 (it fades in via its own animation), so
+     animation:none would leave it invisible — pin it to the lit state. */
+  .aurora {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .grain { animation: none; }
+
+  /* Static-but-visible resting states for the frozen layers. */
+  .pulse { opacity: 0.55; }
+  .star { opacity: 0.34; }
+  .trace { animation: none; }
+
+  /* Mark boot sequence: draw-on and node ignition land at their end state. */
+  .markLinks path { animation: none; stroke-dashoffset: 0; }
+  .markNodes circle { animation: none; opacity: 1; }
+  .markPulse { animation: none; }
+  .markNodes circle,
+  .markWrap::before { transform: none; }
+
+  /* Purely additive flourishes: drop them rather than freeze a stray shape. */
+  .submit::after,
+  .statusDot::after { display: none; }
+
+  .google, .submit, .email, .panel { transition: none; }
 }
 
 .subtitle {
-  margin: 8px 0 30px;
+  margin: 8px 0 0;
   font-size: 14.5px;
   line-height: 1.5;
   color: var(--j-muted);

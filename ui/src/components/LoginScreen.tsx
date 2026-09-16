@@ -1,12 +1,44 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { signIn } from "next-auth/react";
 import styles from "./login.module.css";
 
 /** Set to "/jessica-mark.png" to render a raster logo (mix-blend-mode: screen
  *  knocks the black plate out against the dark panel) instead of the vector. */
 const LOGO_SRC: string | null = null;
+
+/**
+ * Node stars for the mesh backdrop, in the trace layer's 1440x900 viewBox.
+ * Deliberately a hard-coded table rather than Math.random(): this screen is
+ * server-rendered, and a random field would produce different markup on the
+ * client, tripping React's hydration check.
+ */
+const STARS: ReadonlyArray<{
+  x: number;
+  y: number;
+  r: number;
+  delay: number;
+  dur: number;
+}> = [
+  { x: 118, y: 104, r: 1.4, delay: 0, dur: 6.4 },
+  { x: 268, y: 214, r: 1, delay: 1.1, dur: 5.2 },
+  { x: 402, y: 96, r: 1.2, delay: 2.3, dur: 7.1 },
+  { x: 214, y: 452, r: 1, delay: 3.6, dur: 5.8 },
+  { x: 536, y: 348, r: 1.5, delay: 0.6, dur: 6.8 },
+  { x: 688, y: 178, r: 1.1, delay: 2.9, dur: 5.4 },
+  { x: 762, y: 486, r: 1.3, delay: 4.2, dur: 7.4 },
+  { x: 908, y: 268, r: 1, delay: 1.7, dur: 6.1 },
+  { x: 1024, y: 402, r: 1.4, delay: 3.1, dur: 5.6 },
+  { x: 1168, y: 156, r: 1.1, delay: 0.9, dur: 6.9 },
+  { x: 1298, y: 336, r: 1.2, delay: 4.7, dur: 5.9 },
+  { x: 1382, y: 612, r: 1.3, delay: 2.1, dur: 7.2 },
+  { x: 316, y: 706, r: 1.1, delay: 5.3, dur: 6.3 },
+  { x: 874, y: 764, r: 1.4, delay: 1.4, dur: 5.5 },
+  { x: 1046, y: 668, r: 1, delay: 3.9, dur: 6.6 },
+  { x: 588, y: 840, r: 1.2, delay: 0.3, dur: 7 },
+];
+
 
 /**
  * Jessica 3.5 sign-in — dark-only neural-mesh panel.
@@ -25,11 +57,69 @@ export function LoginScreen() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Cursor spotlight + panel tilt. Both are rAF-throttled so the mousemove
+  // handler never writes layout-affecting styles more than once per frame.
+  const pageRef = useRef<HTMLElement | null>(null);
+  const panelRef = useRef<HTMLElement | null>(null);
+  const frameRef = useRef(0);
+
+  useEffect(() => {
+    // Coarse pointers (touch) and reduced-motion users get the static scene.
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || still) return;
+
+    function onMove(event: PointerEvent) {
+      if (frameRef.current) return;
+      frameRef.current = requestAnimationFrame(() => {
+        frameRef.current = 0;
+        const page = pageRef.current;
+        const panel = panelRef.current;
+        if (!page || !panel) return;
+
+        const rect = page.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // 1. Spotlight: paint the cursor's position into the halo's centre.
+        //    These names must match the .spotlight consumer in the stylesheet
+        //    (--j-mx / --j-my); px values are fine for the gradient's origin.
+        page.style.setProperty("--j-mx", `${x}px`);
+        page.style.setProperty("--j-my", `${y}px`);
+
+        // 2. Tilt: a subtle 3D lean, strongest at the panel's edges.
+        const panelRect = panel.getBoundingClientRect();
+        const dx = (event.clientX - (panelRect.left + panelRect.width / 2)) / panelRect.width;
+        const dy = (event.clientY - (panelRect.top + panelRect.height / 2)) / panelRect.height;
+        const clamp = (n: number) => Math.max(-1, Math.min(1, n));
+        page.style.setProperty("--j-tilt-y", `${clamp(dx) * 4}deg`);
+        page.style.setProperty("--j-tilt-x", `${clamp(-dy) * 3.4}deg`);
+      });
+    }
+
+    function onLeave() {
+      const page = pageRef.current;
+      if (!page) return;
+      page.dataset.spot = "off";
+      page.style.setProperty("--j-tilt-x", "0deg");
+      page.style.setProperty("--j-tilt-y", "0deg");
+    }
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerleave", onLeave);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerleave", onLeave);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    };
+  }, []);
+
   function handleEmail(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setStep(2);
   }
+
 
   async function handleProfileSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -65,11 +155,24 @@ export function LoginScreen() {
   }
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} ref={pageRef}>
+      {/* Atmosphere stack — all at z-index:-1, painted in DOM order so the
+          spotlight reads as light through the mesh and the grain sits on top
+          of everything to break up gradient banding. */}
+      <div className={styles.aurora} aria-hidden="true" />
+      <div className={styles.spotlight} aria-hidden="true" />
+      <div className={styles.grain} aria-hidden="true" />
+
       <NeuralMesh />
+      <TraceLines />
 
       <section className={styles.panel}>
         <div className={styles.markWrap}>
+          {/* Radar pings radiating from the mark. Absolutely positioned on
+              .markWrap's centre by the stylesheet. */}
+          <span className={styles.ping} aria-hidden="true" />
+          <span className={styles.ping} aria-hidden="true" />
+
           {LOGO_SRC ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img className={styles.markImage} src={LOGO_SRC} alt="Jessica" />
@@ -78,8 +181,20 @@ export function LoginScreen() {
           )}
         </div>
 
-        <h1 className={styles.title}>Welcome to Jessica 3.5</h1>
+        <h1 className={styles.title}>
+          Welcome to <span className={styles.titleAccent}>Jessica 3.5</span>
+        </h1>
         <p className={styles.subtitle}>Your Enterprise Fleet Supervisor</p>
+
+        {/* Topology nod: Jessica supervises 4 domain supervisors. */}
+        <p className={styles.status}>
+          <span className={styles.statusDot} aria-hidden="true" />
+          Fleet online
+          <span className={styles.statusSep} aria-hidden="true">
+            ·
+          </span>
+          4 supervisors
+        </p>
 
         {step === 1 ? (
           <>
@@ -184,17 +299,30 @@ export default LoginScreen;
 function JessicaMark() {
   return (
     <svg
-      className={styles.mark}
+      className={`${styles.mark} ${styles.markPulse}`}
       viewBox="0 0 120 106"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Jessica"
     >
-      <g stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
-        <path d="M21.7 18.9 51.1 8M21.7 18.9 8 42.2M21.7 18.9 33.7 39.1M51.1 8 80.5 9.4M51.1 8 62 27.2M51.1 8 33.7 39.1M80.5 9.4 62 27.2M80.5 9.4 104.5 26.8M80.5 9.4 80.5 43.6M62 27.2 80.5 43.6M62 27.2 51.8 48.7M104.5 26.8 80.5 43.6M104.5 26.8 112 55.2M8 42.2 18.3 64.8M33.7 39.1 51.8 48.7M33.7 39.1 18.3 64.8M80.5 43.6 51.8 48.7M80.5 43.6 92.1 72.3M51.8 48.7 61 70.3M51.8 48.7 38.4 74.7M112 55.2 92.1 72.3M18.3 64.8 38.4 74.7M18.3 64.8 61 70.3M38.4 74.7 61 70.3M61 70.3 92.1 72.3M61 70.3 79.2 98M92.1 72.3 79.2 98" />
+      <g
+        className={styles.markLinks}
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      >
+        <path
+          pathLength={100}
+          d="M21.7 18.9 51.1 8M21.7 18.9 8 42.2M21.7 18.9 33.7 39.1M51.1 8 80.5 9.4M51.1 8 62 27.2M51.1 8 33.7 39.1M80.5 9.4 62 27.2M80.5 9.4 104.5 26.8M80.5 9.4 80.5 43.6M62 27.2 80.5 43.6M62 27.2 51.8 48.7M104.5 26.8 80.5 43.6M104.5 26.8 112 55.2M8 42.2 18.3 64.8M33.7 39.1 51.8 48.7M33.7 39.1 18.3 64.8M80.5 43.6 51.8 48.7M80.5 43.6 92.1 72.3M51.8 48.7 61 70.3M51.8 48.7 38.4 74.7M112 55.2 92.1 72.3M18.3 64.8 38.4 74.7M18.3 64.8 61 70.3M38.4 74.7 61 70.3M61 70.3 92.1 72.3M61 70.3 79.2 98M92.1 72.3 79.2 98"
+        />
       </g>
-      <g fill="var(--j-surface)" stroke="currentColor" strokeWidth="2.8">
+      <g
+        className={styles.markNodes}
+        fill="var(--j-surface)"
+        stroke="currentColor"
+        strokeWidth="2.8"
+      >
         <circle cx="21.7" cy="18.9" r="4.6" />
         <circle cx="51.1" cy="8" r="4.6" />
         <circle cx="80.5" cy="9.4" r="4.6" />
@@ -210,6 +338,53 @@ function JessicaMark() {
         <circle cx="61" cy="70.3" r="4.6" />
         <circle cx="92.1" cy="72.3" r="4.6" />
         <circle cx="79.2" cy="98" r="4.6" />
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * Signal traces — data-highway lines with light travelling along them, plus a
+ * star field of node dots and expanding "ping" rings. Sits between the mesh and
+ * the panel to give the backdrop depth. Fixed 1440x900 viewBox scaled to cover;
+ * preserveAspectRatio is intentional since the scene is purely decorative.
+ */
+function TraceLines() {
+  return (
+    <svg
+      className={styles.traceSvg}
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {/* Faint static rail first, then the two travelling lights. The dash
+          pattern in .trace (130 on, 2100 off, offset cycled by exactly one
+          full period) keeps a single pulse in flight per wire. */}
+      <path
+        className={styles.traceRail}
+        d="M-80 280C160 140 400 420 700 300 1000 180 1240 420 1520 260"
+      />
+      <path
+        className={styles.trace}
+        d="M-80 280C160 140 400 420 700 300 1000 180 1240 420 1520 260"
+      />
+      <path
+        className={styles.trace}
+        d="M-80 620C180 700 420 480 720 580 1020 680 1260 470 1520 560"
+      />
+
+      <g>
+        {STARS.map((s) => (
+          <circle
+            key={`${s.x}-${s.y}`}
+            className={styles.star}
+            cx={s.x}
+            cy={s.y}
+            r={s.r}
+            style={{ animationDelay: `${s.delay}s`, animationDuration: `${s.dur}s` }}
+          />
+        ))}
       </g>
     </svg>
   );
